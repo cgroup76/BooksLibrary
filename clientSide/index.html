@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+
+   
+<script>
+    googleApi = "https://www.googleapis.com/books/v1/volumes?filter=paid-ebooks&maxResults=40&q=subject:fiction&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ"
+
+    // JavaScript source code
+    function ajaxCall(method, api, data, successCB, errorCB) {
+        $.ajax({
+            type: method,
+            url: api,
+            data: data,
+            cache: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: successCB,
+            error: errorCB
+        });
+    }
+    function ajaxCallSync(method, api, data, successCB, errorCB) {
+        $.ajax({
+            type: method,
+            url: api,
+            data: data,
+            cache: false,
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: successCB,
+            error: errorCB
+        });
+    }
+    ajaxCall("GET", googleApi, null, successCB, errorCB);
+
+    function successCB(data) { console.log(data) }
+    function errorCB(err) { console.log(err) }
+</script>
+</body>
+
+
+
+</html>
