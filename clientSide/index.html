@@ -13,7 +13,8 @@
 
    
 <script>
-    googleApi = "https://www.googleapis.com/books/v1/volumes?filter=paid-ebooks&maxResults=40&q=subject:fiction&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ"
+    googleApiFictionBooks = "https://www.googleapis.com/books/v1/volumes?filter=ebooks&maxResults=10&q=subject:fiction&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ"
+    allBooks = [];
 
     // JavaScript source code
     function ajaxCall(method, api, data, successCB, errorCB) {
@@ -41,9 +42,20 @@
             error: errorCB
         });
     }
-    ajaxCall("GET", googleApi, null, successCB, errorCB);
+    ajaxCallSync("GET", googleApiFictionBooks, null, successCB, errorCB);
 
-    function successCB(data) { console.log(data) }
+    ////drama books
+    //ajaxCallSync("GET", "https://www.googleapis.com/books/v1/volumes?filter=ebooks&maxResults=10&q=subject:drama&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ", null, successCB, errorCB);
+
+    ////science fiction
+    //ajaxCallSync("GET", "https://www.googleapis.com/books/v1/volumes?filter=ebooks&maxResults=10&q=subject:Sciencefiction&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ", null, successCB, errorCB);
+
+
+    function successCB(data) {
+        allBooks.push(data.items);
+        console.log(allBooks)
+        
+    }
     function errorCB(err) { console.log(err) } 
 </script>
 </body>
