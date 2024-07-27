@@ -229,11 +229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\serverSide\\serverSide.csproj",
+      "projectUniqueName": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\serverSide.csproj",
       "projectName": "serverSide",
-      "projectPath": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\serverSide\\serverSide.csproj",
+      "projectPath": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\serverSide.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\serverSide\\obj\\",
+      "outputPath": "C:\\Users\\user\\OneDrive\\Desktop\\BooksLibrary\\serverSide\\serverSide\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
