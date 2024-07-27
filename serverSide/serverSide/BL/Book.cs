@@ -8,7 +8,7 @@
         bool isEbook;
         bool isActive;
         bool isAvailable;
-        float price;
+        double price;
         string category;
         string smallThumbnail;
         string thumbnail;
@@ -17,14 +17,14 @@
         string previewLink;
         string publishDate;
         string authorName;
-
+        Random randomPrice;  // generate a random price for each book
         public int Id { get => id; set => id = value; }
         public string Title { get => title; set => title = value; }
         public string SubTitle { get => subTitle; set => subTitle = value; }
         public bool IsEbook { get => isEbook; set => isEbook = value; }
         public bool IsActive { get => isActive; set => isActive = value; }
         public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
-        public float Price { get => price; set => price = value; }
+        public double Price { get => price; set => price = value; }
         public string Category { get => category; set => category = value; }
         public string SmallThumbnail { get => smallThumbnail; set => smallThumbnail = value; }
         public string Thumbnail { get => thumbnail; set => thumbnail = value; }
@@ -43,8 +43,8 @@
             this.isEbook = isEbook;
             this.isActive = isActive;
             this.isAvailable = isAvailable;
-            this.price = price;
-            this.category = category;
+            this.price = randomPrice.NextInt64(50, 301) + randomPrice.NextDouble();  // generate a random decimal price between 50 to 300 
+            this.category = category; 
             this.smallThumbnail = smallThumbnail;
             this.thumbnail = thumbnail;
             this.numOfPages = numOfPages;

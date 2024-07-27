@@ -52,6 +52,27 @@
 
 
     function successCB(data) {
+        var newBook = {};
+
+        data.forEach((book) =>
+            newBook = {
+                "id": 0,
+                "title": "",
+                "subTitle": "",
+                "isEbook": false,
+                "isActive": false,
+                "isAvailable": false,
+                "price": 0.0,
+                "category": "",
+                "smallThumbnail": "",
+                "thumbnail": "",
+                "numOfPages": 0,
+                "description": "",
+                "previewLink": "",
+                "publishDate": "",
+                "authorName": ""
+            }
+        )
         allBooks.push(data.items);
         console.log(allBooks)
         
