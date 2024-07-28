@@ -11,10 +11,10 @@ using serverSide.BL;
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
 /// </summary>
-public class DBservicesCourse
+public class DBservicesBooks
 {
 
-    public DBservicesCourse() { }
+    public DBservicesBooks() { }
 
     //--------------------------------------------------------------------------------------------------
     // This method creates a connection to the database according to the connectionString name in the web.config 
@@ -114,7 +114,15 @@ public class DBservicesCourse
 
         cmd.Parameters.AddWithValue("@publishedDate", book.PublishDate);
 
-        cmd.Parameters.AddWithValue("@author", book.AuthorName);
+        cmd.Parameters.AddWithValue("@eirstAuthor", book.FirstAuthorName);
+
+        cmd.Parameters.AddWithValue("@secondAuthor", book.SecondAuthorName);
+
+        cmd.Parameters.AddWithValue("@rating", book.Rating);
+
+        cmd.Parameters.AddWithValue("@numOfReviews", book.NumOfReviews);
+
+        cmd.Parameters.AddWithValue("@textSnippet", book.TextSnippet);
 
 
         return cmd;

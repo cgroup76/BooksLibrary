@@ -4,10 +4,10 @@
     {
         int id;
         string title;
-        string subTitle;
-        bool isEbook;
-        bool isActive;
-        bool isAvailable;
+        string subTitle = "";
+        int isEbook;
+        int isActive;
+        int isAvailable;
         double price;
         string category;
         string smallThumbnail;
@@ -16,26 +16,17 @@
         string description;
         string previewLink;
         string publishDate;
-        string authorName;
-        Random randomPrice;  // generate a random price for each book
-        public int Id { get => id; set => id = value; }
-        public string Title { get => title; set => title = value; }
-        public string SubTitle { get => subTitle; set => subTitle = value; }
-        public bool IsEbook { get => isEbook; set => isEbook = value; }
-        public bool IsActive { get => isActive; set => isActive = value; }
-        public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
-        public double Price { get => price; set => price = value; }
-        public string Category { get => category; set => category = value; }
-        public string SmallThumbnail { get => smallThumbnail; set => smallThumbnail = value; }
-        public string Thumbnail { get => thumbnail; set => thumbnail = value; }
-        public int NumOfPages { get => numOfPages; set => numOfPages = value; }
-        public string Description { get => description; set => description = value; }
-        public string PreviewLink { get => previewLink; set => previewLink = value; }
-        public string PublishDate { get => publishDate; set => publishDate = value; }
-        public string AuthorName { get => authorName; set => authorName = value; }
+        string firstAuthorName;
+        string secondAuthorName;
+        int numOfReviews;
+        double rating;
+        string textSnippet;
 
-        public Book(int id, string title, string subTitle, bool isEbook, bool isActive, bool isAvailable, float price, string category,
-            string smallThumbnail, string thumbnail, int numOfPages, string description, string previewLink, string publishDate, string author)
+        Random randomPrice = new Random();  // generate a random price for each book
+
+        public Book(int id, string title, string subTitle, int isEbook, int isActive, int isAvailable, string category, string smallThumbnail,
+            string thumbnail, int numOfPages, string description, string previewLink, string publishDate, string firstAuthorName, string secondAuthorName,
+            int numOfReviews, double rating, string textSnippet)
         {
             this.id = id;
             this.title = title;
@@ -44,14 +35,46 @@
             this.isActive = isActive;
             this.isAvailable = isAvailable;
             this.price = randomPrice.NextInt64(50, 301) + randomPrice.NextDouble();  // generate a random decimal price between 50 to 300 
-            this.category = category; 
+            this.category = category;
             this.smallThumbnail = smallThumbnail;
             this.thumbnail = thumbnail;
             this.numOfPages = numOfPages;
             this.description = description;
             this.previewLink = previewLink;
             this.publishDate = publishDate;
-            this.authorName = author;
+            this.firstAuthorName = firstAuthorName;
+            this.secondAuthorName = secondAuthorName;
+            this.numOfReviews = numOfReviews;
+            this.rating = rating;
+            this.textSnippet = textSnippet;
+        }
+
+        public int Id { get => id; set => id = value; }
+        public string Title { get => title; set => title = value; }
+        public string SubTitle { get => subTitle; set => subTitle = value; }
+        public int IsEbook { get => isEbook; set => isEbook = value; }
+        public int IsActive { get => isActive; set => isActive = value; }
+        public int IsAvailable { get => isAvailable; set => isAvailable = value; }
+        public double Price { get => price; set => price = value; }
+        public string Category { get => category; set => category = value; }
+        public string SmallThumbnail { get => smallThumbnail; set => smallThumbnail = value; }
+        public string Thumbnail { get => thumbnail; set => thumbnail = value; }
+        public int NumOfPages { get => numOfPages; set => numOfPages = value; }
+        public string Description { get => description; set => description = value; }
+        public string PreviewLink { get => previewLink; set => previewLink = value; }
+        public string PublishDate { get => publishDate; set => publishDate = value; }
+        public string FirstAuthorName { get => firstAuthorName; set => firstAuthorName = value; }
+        public string SecondAuthorName { get => secondAuthorName; set => secondAuthorName = value; }
+        public int NumOfReviews { get => numOfReviews; set => numOfReviews = value; }
+        public double Rating { get => rating; set => rating = value; }
+        public string TextSnippet { get => textSnippet; set => textSnippet = value; }
+
+        // Add new book to the database 
+        public bool AddNewBook(Book book)
+        {
+            DBservicesBooks dBserviecesBooks = new DBservicesBooks();
+
+            return 1 == dBserviecesBooks.AddNewBook(book);
         }
     }
 

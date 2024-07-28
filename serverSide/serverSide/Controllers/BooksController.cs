@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using serverSide.BL;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,10 +23,11 @@ namespace serverSide.Controllers
             return "value";
         }
 
-        // POST api/<BooksController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST add new book to DB
+        [HttpPost("AddNewBook")]
+        public bool Post([FromBody] Book newBook)
         {
+            return newBook.AddNewBook(newBook);
         }
 
         // PUT api/<BooksController>/5
