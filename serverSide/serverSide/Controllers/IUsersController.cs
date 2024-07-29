@@ -17,13 +17,6 @@ namespace serverSide.Controllers
  
         }
 
-        // GET get the loggedin user name
-        [HttpGet("getUserName")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST sign up new user
         [HttpPost("signUpNewUser")]
         public bool Post([FromBody] IUser newUser)
@@ -48,9 +41,9 @@ namespace serverSide.Controllers
         [HttpPut("loginUser")]
         public IActionResult Put([FromBody] IUser user)
         {
-            int loggedinUserId = IUser.Login(user);
+            object loggedinUserDetails = IUser.Login(user);
 
-            if (loggedinUserId != 0) { return Ok(loggedinUserId); }
+            if (((IDictionary<string, object>)loggedinUserDetails).Any()) { return Ok(loggedinUserDetails); } // checks if the object is not empty
 
             else { return BadRequest(); }
         }

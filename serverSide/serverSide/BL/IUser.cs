@@ -66,7 +66,7 @@ namespace serverSide.BL
         }
 
         // login a user
-        public static int Login(IUser LoginUser)
+        public static object Login(IUser LoginUser)
         {
             DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
@@ -91,8 +91,6 @@ namespace serverSide.BL
 
             return true;
         }
-
-
 
     }
 }
