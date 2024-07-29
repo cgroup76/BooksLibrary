@@ -104,7 +104,7 @@ public class DBservicesUsers
 
 
     //--------------------------------------------------------------------------------------------------
-    // login user
+    // login user - return user id
     //--------------------------------------------------------------------------------------------------
     public int logInUser(IUser user)
     {
@@ -122,7 +122,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedurelogInUser("Login", con, user);             // create the command
+        cmd = CreateCommandWithStoredProcedurelogInUser("LoginIUser", con, user);             // create the command
 
         try
         {
@@ -172,9 +172,76 @@ public class DBservicesUsers
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method return the login user
+    // This method logout the log in user
     //--------------------------------------------------------------------------------------------------
-    public IUser GetLoginUser()
+    public void logOut(int userId)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProcedureLogOut("LogoutIUser", con, userId);             // create the command
+
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to logout user
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProcedureLogOut(String spName, SqlConnection con, int userId)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+        cmd.Parameters.AddWithValue("@userId", userId);
+
+        return cmd;
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method return the login user name
+    //--------------------------------------------------------------------------------------------------
+    public IUser GetLoginUserName(int userId)
     {
 
         SqlConnection con;
@@ -192,7 +259,7 @@ public class DBservicesUsers
 
         cmd = CreateCommandWithStoredProcedureGetLoginUser("GetLoginUser", con);             // create the command
 
-        IUser user = new IUser();
+        string userName = "";
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -200,13 +267,11 @@ public class DBservicesUsers
             if (dataReader.HasRows)
             {
                 dataReader.Read();
-                user.UserName = Convert.ToString(dataReader["name"]);
-                user.IsAdmin = (Convert.ToInt32(dataReader["isAdmin"])== 1);
-                user.Id = Convert.ToInt32(dataReader["userId"]);
+                userName = Convert.ToString(dataReader["name"]);
 
-                return user;
+                return userName;
             }
-            else return null;
+            else return "";
 
         }
         catch (Exception ex)
@@ -247,6 +312,7 @@ public class DBservicesUsers
         return cmd;
     }
 
+<<<<<<< Updated upstream
 
     //--------------------------------------------------------------------------------------------------
     // This method logout the log in user
@@ -460,4 +526,6 @@ public class DBservicesUsers
         return cmd;
     }
 
+=======
+>>>>>>> Stashed changes
 }

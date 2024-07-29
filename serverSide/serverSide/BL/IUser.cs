@@ -30,9 +30,15 @@ namespace serverSide.BL
         public bool IsActive { get => isActive; set => isActive = value; }
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
+<<<<<<< Updated upstream
         static public List<IUser> ReadUsers() { return usersList; }
         
+=======
+        //static public List<IUser> ReadUsers() { return usersList; }
+        //static public List<Book> allMyBooks() { return myBooks; }
+>>>>>>> Stashed changes
 
+        // add new user
         public bool Insert(IUser newUser)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
@@ -42,6 +48,7 @@ namespace serverSide.BL
             else return false;
         }
 
+<<<<<<< Updated upstream
 
         // Add new book to the user's books list
         public static bool addNewBook(int userId, int bookId)
@@ -65,6 +72,42 @@ namespace serverSide.BL
 
 
         // Delete book from my book list --> by book id
+        //public static bool DeleteBookById(int id)
+        //{
+
+        //}
+=======
+        // login a user
+        public static int Login(IUser LoginUser)
+        {
+            DBservicesUsers dbservicesUsers = new DBservicesUsers();
+
+            return dbservicesUsers.logInUser(LoginUser);
+
+        }
+        // logout a user - because there is always one user logged in the logout make the islogin = false
+        public static bool Logout(int userId)
+        {
+            DBservicesUsers dbservicesUsers = new DBservicesUsers();
+
+            dbservicesUsers.logOut(userId);
+
+            return true;
+        }
+>>>>>>> Stashed changes
+
+        //// Add new book to the user's books list
+        //public static bool addNewBook(Book book)
+        //{
+        //    // Check if the book is already in my list --> if it is return false
+
+
+
+        //}
+
+
+
+        //// Delete book from my book list --> by book id
         //public static bool DeleteBookById(int id)
         //{
 
