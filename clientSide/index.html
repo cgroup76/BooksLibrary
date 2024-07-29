@@ -64,7 +64,7 @@
                         newBook = {
                             "id": 0,
                             "title": book.volumeInfo.title,
-                            "subTitle": "",
+                            "subTitle": book.volumeInfo.subTitle,
                             "isEbook": 0,
                             "isActive": 1,
                             "isAvailable": 1,
@@ -86,7 +86,7 @@
                         newBook = {
                             "id": 0,
                             "title": book.volumeInfo.title,
-                            "subTitle": "",
+                            "subTitle": book.volumeInfo.subTitle,
                             "isEbook": 0,
                             "isActive": 1,
                             "isAvailable": 1,
@@ -109,7 +109,7 @@
                     newBook = {
                         "id": 0,
                         "title": book.volumeInfo.title,
-                        "subTitle": "",
+                        "subTitle": book.volumeInfo.subTitle,
                         "isEbook": 0,
                         "isActive": 1,
                         "isAvailable": 1,
@@ -128,6 +128,7 @@
                     }
                 }
                 if (newBook.secondAuthorName == undefined) {newBook.secondAuthorName = null }
+                if (newBook.subTitle == undefined) {newBook.subTitle = "" }
                 console.log(newBook)
                 allBooks.push(newBook);
                 authors.push(newBook.firstAuthorName);
@@ -139,7 +140,7 @@
         console.log(allBooks)
         console.log(authors)
     }
-    y(eBooks)
+    y(books)
     function errorCB(err) { console.log(err) } 
 
     function ss(s) {console.log(s) }

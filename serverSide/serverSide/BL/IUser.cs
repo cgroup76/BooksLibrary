@@ -29,32 +29,32 @@ namespace serverSide.BL
         public bool IsActive { get => isActive; set => isActive = value; }
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
-        //static public List<IUser> ReadUsers() { return usersList; }
-        //static public List<Book> allBooks() { return myBooks; }
-
-        
-
-
-        //// Add new book to the user's books list
-        //public static bool addNewBook(Book book)
-        //{
-        //    // Check if the book is already in my list --> if it is return false
-
-           
-
-        //}
+        static public List<IUser> ReadUsers() { return usersList; }
+        static public List<Book> allMyBooks() { return myBooks; }
 
 
 
-        //// Delete book from my book list --> by book id
-        //public static bool DeleteBookById(int id)
-        //{
-           
-        //}
 
-        
+        // Add new book to the user's books list
+        public static bool addNewBook(Book book)
+        {
+            // Check if the book is already in my list --> if it is return false
 
 
-       
+
+        }
+
+
+
+        // Delete book from my book list --> by book id
+        public static bool DeleteBookById(int id)
+        {
+
+        }
+
+
+
+
+
     }
 }
