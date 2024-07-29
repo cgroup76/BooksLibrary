@@ -32,7 +32,14 @@ namespace serverSide.BL
         static public List<IUser> ReadUsers() { return usersList; }
         static public List<Book> allMyBooks() { return myBooks; }
 
+        public bool Insert(IUser newUser)
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
+            if (dBservicesUsers.AddNewUser(newUser) == 1) return true;
+
+            else return false;
+        }
 
 
         // Add new book to the user's books list
@@ -52,7 +59,7 @@ namespace serverSide.BL
 
         }
 
-
+      
 
 
 
