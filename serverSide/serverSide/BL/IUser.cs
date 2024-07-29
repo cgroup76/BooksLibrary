@@ -30,9 +30,12 @@ namespace serverSide.BL
         public bool IsActive { get => isActive; set => isActive = value; }
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
-        static public List<IUser> ReadUsers() { return usersList; }
+
+       // static public List<IUser> ReadUsers() { return usersList; }
         
 
+
+        // add new user
         public bool Insert(IUser newUser)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
@@ -43,10 +46,10 @@ namespace serverSide.BL
         }
 
 
+
         // Add new book to the user's books list
         public static bool addNewBook(int userId, int bookId)
         {
-            // Check if the book is already in my list --> if it is return false
 
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
             dBservicesUsers.addNewbookToUser(userId,bookId);
@@ -62,15 +65,23 @@ namespace serverSide.BL
 
         }
 
+        // login a user
+        public static int Login(IUser LoginUser)
+        {
+            DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
+            return dbservicesUsers.logInUser(LoginUser);
 
-        // Delete book from my book list --> by book id
-        //public static bool DeleteBookById(int id)
-        //{
+        }
+        // logout a user - because there is always one user logged in the logout make the islogin = false
+        public static bool Logout(int userId)
+        {
+            DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
-        //}
+            dbservicesUsers.logOut(userId);
 
-      
+            return true;
+        }
 
 
 

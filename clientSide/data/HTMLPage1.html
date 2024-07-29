@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- JQuary -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+
+    <!-- sweet aleret -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <header class="bg-dark text-white py-3">
@@ -21,7 +30,8 @@
                         <li class="nav-item"><a class="nav-link text-white" href="#">Shop</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">About</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#">login</a></li>
+                        <li class="nav-item"><a class="nav-link text-white login">login</a></li>
+                        <li class="nav-item userNameBox"><a class="nav-link text-white userName"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -80,8 +90,131 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- login form -->
+
+    <div class="logInForm" id="logInForm">
+        <div class="logInForm-header">
+            <div class="tilte">
+                <button data-close-button class="close-button closeLoginButton">&times;</button>
+            </div>
+        </div>
+        <div class="logInForm-body">
+            <h2>Welcome</h2>
+
+            <form id="logForm">
+                <h5>Log in:</h5>
+                <div class="form-group userNameDiv">
+                    <label for="userName"><span>★ </span>Enter user name:</label>
+                    <input type="text" class="form-control" name="userName" id="userName" placeholder="user name" required />
+                </div>
+                <div class="form-group">
+                    <label for="userEmail"><span>★ </span>Enter email:</label>
+                    <input type="text" class="form-control" name="userEmail" id="userEmail" placeholder="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="userPassword"><span>★ </span>Enter password:</label>
+                    <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" required />
+                </div>
+
+                <input type="submit" value="Log in" class="btn" id="logInButton" />
+                <input type="submit" value="Sign Up" class="btn" id="signupButton" />
+                
+                <div class="signupQuestion"><span>Not registered yet?  </span><a class="signup">signup</a></div>
+                <div class="loginQuestion"><span>Already registered?  </span><a class="login">login</a></div>
+            </form>
+        </div>
+    </div>
+    <div id="overlay" class=""></div>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+    <!---------------->
+
+    
+    <script>
+        var usersAPI = "https://localhost:7225/api/IUsers";
+
+        $(document).ready(function () {
+
+            // log in or sign up forms
+            $('.login').click(showLoginForm);
+            $('.signup').click(showSignupForm);
+
+            // close form
+            $('.closeLoginButton').click(closeLoginForm);
+
+            // submit form
+            $('#logInButton').click(loginUser);
+           // $('#signupButton').click(signupNewUser);
+        })
+
+        // login or signup form
+
+        function showLoginForm() {
+            $('#logInForm').addClass('active');
+            $('#overlay').addClass('active');
+            $('.loginQuestion').hide();
+            $('.signupQuestion').show();
+            $('.userNameDiv').hide();
+            $('#signupButton').hide();
+            $('#logInButton').show();
+        }
+        function closeLoginForm() {
+            $('#logInForm').removeClass('active');
+            $('#overlay').removeClass('active');
+        }
+        function showSignupForm() {
+            $('.userNameDiv').show();
+            $('#signupButton').show();
+            $('.loginQuestion').show();
+            $('#logInButton').hide();
+            $('.signupQuestion').hide();
+        }
+
+        //-----------------------
+        // JavaScript source code
+        function ajaxCall(method, api, data, successCB, errorCB) {
+            $.ajax({
+                type: method,
+                url: api,
+                data: data,
+                cache: false,
+                contentType: "application/json",
+                dataType: "json",
+                success: successCB,
+                error: errorCB
+            });
+        }
+        //-----------------------
+
+        // login user
+
+        function loginUser() {
+
+            let user = {
+                "id": 0,
+                "userName": "",
+                "eMail": $('#userEmail').val(),
+                "password": $('#userPassword').val(),
+                "isAdmin": false,
+                "isActive": true,
+                "isLogIn": true
+            }
+      
+            ajaxCall("PUT", usersAPI + '/loginUser', JSON.stringify(user), success, error);
+
+            return false;
+        }
+
+        function success(userId) {
+
+            localStorage.setItem("loginUserId", userId);
+
+            closeLoginForm();
+        }
+
+        function error(errorMassage) { console.log(errorMassage); }
+
+    </script>
 </body>
 </html>

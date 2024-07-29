@@ -17,17 +17,18 @@ namespace serverSide.Controllers
  
         }
 
-        // GET api/<IUsersController>/5
-        [HttpGet("{id}")]
+        // GET get the loggedin user name
+        [HttpGet("getUserName")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<IUsersController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // POST sign up new user
+        [HttpPost("signUpNewUser")]
+        public bool Post([FromBody] IUser newUser)
         {
+            return newUser.Insert(newUser);
         }
         // POST api/<IUsersController>
         [HttpPost("addNewBookToUser")]
@@ -36,10 +37,22 @@ namespace serverSide.Controllers
             IUser.addNewBook(userId, bookId);
         }
 
-        // PUT api/<IUsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT logout user by id
+        [HttpPut("logoutUser")]
+        public bool Put([FromBody] int userId)
         {
+            return IUser.Logout(userId);
+        }
+
+        // PUT login user
+        [HttpPut("loginUser")]
+        public IActionResult Put([FromBody] IUser user)
+        {
+            int loggedinUserId = IUser.Login(user);
+
+            if (loggedinUserId != 0) { return Ok(loggedinUserId); }
+
+            else { return BadRequest(); }
         }
 
         // DELETE api/<IUsersController>/5
