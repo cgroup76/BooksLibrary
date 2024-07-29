@@ -91,6 +91,14 @@ namespace serverSide.BL
 
             return true;
         }
+        // Add sale and buy book method
+        public static bool saleAndBuyBook(int buyyerId,int sellerId, int bookId)
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
+            dBservicesUsers.saleAndBuyBook(buyyerId, sellerId, bookId);
+            return true;
+
+        }
 
     }
 }

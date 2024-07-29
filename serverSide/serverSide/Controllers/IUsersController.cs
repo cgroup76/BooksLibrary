@@ -53,7 +53,12 @@ namespace serverSide.Controllers
         {
             return IUser.readBook(bookId, userId);
         }
-
+        // PUT sale and buy books
+        [HttpPut("saleAndBuyBook")]
+        public bool Put(int buyyerId, int sellerId, int bookId)
+        {
+            return IUser.saleAndBuyBook(buyyerId, sellerId, bookId);
+        }
         // DELETE api/<IUsersController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
