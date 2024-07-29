@@ -35,9 +35,11 @@ namespace serverSide.Controllers
         }
         // POST api/<IUsersController>
         [HttpPost("addNewBookToUser")]
-        public void Post( int userId, int bookId)
+        public IActionResult Post( int userId, int bookId)
         {
-            IUser.addNewBook(userId, bookId);
+            if(IUser.addNewBook(userId, bookId)) { return Ok(true); }
+
+            return BadRequest();
         }
 
         // PUT logout user by id
@@ -65,9 +67,9 @@ namespace serverSide.Controllers
         }
         // PUT sale and buy books
         [HttpPut("saleAndBuyBook")]
-        public bool Put(int buyyerId, int sellerId, int bookId)
+        public bool Put(int buyerId, int sellerId, int bookId)
         {
-            return IUser.saleAndBuyBook(buyyerId, sellerId, bookId);
+            return IUser.saleAndBuyBook(buyerId, sellerId, bookId);
         }
         // DELETE api/<IUsersController>/5
         [HttpDelete("{id}")]

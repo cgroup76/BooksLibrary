@@ -490,7 +490,7 @@ public class DBservicesUsers
     // This method sale And Buy Book
     //--------------------------------------------------------------------------------------------------
 
-    public int saleAndBuyBook(int buyyerId, int sellerId, int bookID)
+    public int saleAndBuyBook(int buyerId, int sellerId, int bookID)
     {
 
         SqlConnection con;
@@ -506,7 +506,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyyerId, sellerId, bookID);             // create the command
+        cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyerId, sellerId, bookID);             // create the command
 
         try
         {
@@ -535,7 +535,7 @@ public class DBservicesUsers
     // Create the SqlCommand using a stored procedure to sale and buy book
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProceduresaleAndBuyBook(String spName, SqlConnection con, int buyyerId, int sellerId, int bookID)
+    private SqlCommand CreateCommandWithStoredProceduresaleAndBuyBook(String spName, SqlConnection con, int buyerId, int sellerId, int bookID)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -548,7 +548,7 @@ public class DBservicesUsers
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
 
-        cmd.Parameters.AddWithValue("@buyyerId", buyyerId);
+        cmd.Parameters.AddWithValue("@buyyerId", buyerId);
 
         cmd.Parameters.AddWithValue("@sellerId", sellerId);
 

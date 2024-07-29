@@ -50,10 +50,9 @@ namespace serverSide.BL
         // Add new book to the user's books list
         public static bool addNewBook(int userId, int bookId)
         {
-
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
-            dBservicesUsers.addNewbookToUser(userId,bookId);
-            return true;
+
+            return 1 == dBservicesUsers.addNewbookToUser(userId,bookId);
 
         }
 
@@ -92,10 +91,10 @@ namespace serverSide.BL
             return true;
         }
         // Add sale and buy book method
-        public static bool saleAndBuyBook(int buyyerId,int sellerId, int bookId)
+        public static bool saleAndBuyBook(int buyerId,int sellerId, int bookId)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
-            dBservicesUsers.saleAndBuyBook(buyyerId, sellerId, bookId);
+            dBservicesUsers.saleAndBuyBook(buyerId, sellerId, bookId);
             return true;
 
         }

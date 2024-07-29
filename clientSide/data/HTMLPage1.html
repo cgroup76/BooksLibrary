@@ -27,8 +27,8 @@
                 <nav>
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">My Books</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Authors</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
                         <li class="nav-item loginBox"><a class="nav-link text-white login">login</a></li>
                         <li class="nav-item userNameBox"><a class="nav-link text-white userName"></a></li>
@@ -317,7 +317,7 @@
 
                 // no one bought the book
                 else {
-                    booksHtml += `<a class='btn btn-primary' onclick='buyABook("",${book.Id})'>Buy</a>
+                    booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id}, "")'>Buy</a>
                                      </div >
                                    </div >
                                  </div >`;
@@ -334,17 +334,23 @@
         function buyABook(bookId, sellerId) {
 
             var buyer = JSON.parse(localStorage.getItem("loginUserDetails")).userId
-
+           
             // if the book is owned by someone
             if (sellerId != "") {
 
-                ajaxCall("PUT", usersAPI)
+                //ajaxCall("PUT", usersAPI + '/saleAndBuyBook?byerId=' + buyer + '&sellerId=' + sellerId + '&bookId=' + bookId, null, successToBuyABook, errorBuyABook);
             }
 
             else {
                 ajaxCall("POST", usersAPI + '/addNewBookToUser?userId=' + buyer + '&bookId=' + bookId + '', null, successToBuyABook, errorBuyABook);
             }
         }
+
+        function successToBuyABook(status) {
+
+            console.log(status);
+        }
+        function errorBuyABook() { }
     </script>
 </body>
 </html>
