@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using serverSide.BL;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,9 +11,10 @@ namespace serverSide.Controllers
     {
         // GET: api/<IUsersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Book> Get(int userId)
         {
-            return new string[] { "value1", "value2" };
+            return IUser.showMyBooks(userId);
+ 
         }
 
         // GET api/<IUsersController>/5
@@ -26,6 +28,12 @@ namespace serverSide.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+        // POST api/<IUsersController>
+        [HttpPost("addNewBookToUser")]
+        public void Post( int userId, int bookId)
+        {
+            IUser.addNewBook(userId, bookId);
         }
 
         // PUT api/<IUsersController>/5

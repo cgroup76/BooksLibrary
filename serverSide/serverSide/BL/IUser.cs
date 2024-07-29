@@ -1,3 +1,4 @@
+using System.Net;
 using System.Reflection.Metadata.Ecma335;
 
 namespace serverSide.BL
@@ -30,7 +31,7 @@ namespace serverSide.BL
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
         static public List<IUser> ReadUsers() { return usersList; }
-        static public List<Book> allMyBooks() { return myBooks; }
+        
 
         public bool Insert(IUser newUser)
         {
@@ -43,21 +44,31 @@ namespace serverSide.BL
 
 
         // Add new book to the user's books list
-        public static bool addNewBook(Book book)
+        public static bool addNewBook(int userId, int bookId)
         {
             // Check if the book is already in my list --> if it is return false
 
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
+            dBservicesUsers.addNewbookToUser(userId,bookId);
+            return true;
 
+        }
+
+        //show all user's books
+        public static List<Book> showMyBooks(int userId)
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
+            return dBservicesUsers.GetBooksPerUser(userId);
 
         }
 
 
 
         // Delete book from my book list --> by book id
-        public static bool DeleteBookById(int id)
-        {
+        //public static bool DeleteBookById(int id)
+        //{
 
-        }
+        //}
 
       
 
