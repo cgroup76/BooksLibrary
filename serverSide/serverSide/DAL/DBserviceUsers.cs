@@ -312,53 +312,6 @@ public class DBservicesUsers
         return cmd;
     }
 
-<<<<<<< Updated upstream
-
-    //--------------------------------------------------------------------------------------------------
-    // This method logout the log in user
-    //--------------------------------------------------------------------------------------------------
-    //public void logOut() 
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithStoredProcedureLogOut("Logout", con);             // create the command
-
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
     //--------------------------------------------------------------------------------------------------
     // This method add New book To user
     //--------------------------------------------------------------------------------------------------

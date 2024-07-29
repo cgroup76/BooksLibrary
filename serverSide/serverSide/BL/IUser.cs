@@ -30,13 +30,10 @@ namespace serverSide.BL
         public bool IsActive { get => isActive; set => isActive = value; }
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
-<<<<<<< Updated upstream
-        static public List<IUser> ReadUsers() { return usersList; }
+
+       // static public List<IUser> ReadUsers() { return usersList; }
         
-=======
-        //static public List<IUser> ReadUsers() { return usersList; }
-        //static public List<Book> allMyBooks() { return myBooks; }
->>>>>>> Stashed changes
+
 
         // add new user
         public bool Insert(IUser newUser)
@@ -48,12 +45,11 @@ namespace serverSide.BL
             else return false;
         }
 
-<<<<<<< Updated upstream
+
 
         // Add new book to the user's books list
         public static bool addNewBook(int userId, int bookId)
         {
-            // Check if the book is already in my list --> if it is return false
 
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
             dBservicesUsers.addNewbookToUser(userId,bookId);
@@ -69,14 +65,6 @@ namespace serverSide.BL
 
         }
 
-
-
-        // Delete book from my book list --> by book id
-        //public static bool DeleteBookById(int id)
-        //{
-
-        //}
-=======
         // login a user
         public static int Login(IUser LoginUser)
         {
@@ -94,26 +82,6 @@ namespace serverSide.BL
 
             return true;
         }
->>>>>>> Stashed changes
-
-        //// Add new book to the user's books list
-        //public static bool addNewBook(Book book)
-        //{
-        //    // Check if the book is already in my list --> if it is return false
-
-
-
-        //}
-
-
-
-        //// Delete book from my book list --> by book id
-        //public static bool DeleteBookById(int id)
-        //{
-
-        //}
-
-      
 
 
 
