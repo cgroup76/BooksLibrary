@@ -414,8 +414,6 @@ public class DBservicesUsers
         return cmd;
     }
 
-<<<<<<< Updated upstream
-
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure to mark book as read by user 
     //---------------------------------------------------------------------------------
@@ -486,7 +484,4 @@ public class DBservicesUsers
         return cmd;
     }
 
-
-=======
->>>>>>> Stashed changes
 }
