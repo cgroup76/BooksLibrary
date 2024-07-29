@@ -34,7 +34,7 @@
             this.isEbook = isEbook;
             this.isActive = isActive;
             this.isAvailable = isAvailable;
-            this.price = randomPrice.NextInt64(50, 301) + randomPrice.NextDouble();  // generate a random decimal price between 50 to 300 
+            this.price = Math.Round(randomPrice.NextInt64(50, 301) + randomPrice.NextDouble(), 2);  // generate a random decimal price between 50 to 300 
             this.category = category;
             this.smallThumbnail = smallThumbnail;
             this.thumbnail = thumbnail;
@@ -43,7 +43,7 @@
             this.previewLink = previewLink;
             this.publishDate = publishDate;
             this.firstAuthorName = firstAuthorName;
-            this.secondAuthorName = secondAuthorName;
+            this.secondAuthorName = secondAuthorName; 
             this.numOfReviews = numOfReviews;
             this.rating = rating;
             this.textSnippet = textSnippet;
@@ -64,7 +64,7 @@
         public string PreviewLink { get => previewLink; set => previewLink = value; }
         public string PublishDate { get => publishDate; set => publishDate = value; }
         public string FirstAuthorName { get => firstAuthorName; set => firstAuthorName = value; }
-        public string SecondAuthorName { get => secondAuthorName; set => secondAuthorName = value; }
+        public string? SecondAuthorName { get => secondAuthorName; set => secondAuthorName = value; }
         public int NumOfReviews { get => numOfReviews; set => numOfReviews = value; }
         public double Rating { get => rating; set => rating = value; }
         public string TextSnippet { get => textSnippet; set => textSnippet = value; }

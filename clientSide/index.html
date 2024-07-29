@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-
+    <div id="books"></div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
             crossorigin="anonymous"></script>
@@ -51,7 +51,7 @@
     //ajaxCallSync("GET", "https://www.googleapis.com/books/v1/volumes?filter=ebooks&maxResults=10&q=subject:Sciencefiction&key=AIzaSyCwCGOio38wHHVtold0dxq3NkDM8Cd7uUQ", null, successCB, errorCB);
 
     var bookAPI = "https://localhost:7225/api/Books";
-
+    var authors = [];
     function y(data) {
         var newBook;
         allBooks = [];
@@ -127,14 +127,19 @@
                         "textSnippet": book.searchInfo.textSnippet
                     }
                 }
+                if (newBook.secondAuthorName == undefined) {newBook.secondAuthorName = null }
                 console.log(newBook)
                 allBooks.push(newBook);
-               // ajaxCallSync("POST", "https://localhost:7225/api/Books" + "/AddNewBook", JSON.stringify(newBook), ss, er);
+                authors.push(newBook.firstAuthorName);
+                authors.push(newBook.secondAuthorName);
+                document.getElementById('books').innerHTML += "<img src='" + newBook.smallThumbnail + "'>"
+                //ajaxCallSync("POST", "https://localhost:7225/api/Books" + "/AddNewBook", JSON.stringify(newBook), ss, er);
             }
         })
         console.log(allBooks)
+        console.log(authors)
     }
-    y(books)
+    y(eBooks)
     function errorCB(err) { console.log(err) } 
 
     function ss(s) {console.log(s) }

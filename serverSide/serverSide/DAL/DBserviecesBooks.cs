@@ -114,9 +114,9 @@ public class DBservicesBooks
 
         cmd.Parameters.AddWithValue("@publishedDate", book.PublishDate);
 
-        cmd.Parameters.AddWithValue("@eirstAuthor", book.FirstAuthorName);
+        cmd.Parameters.AddWithValue("@firstAuthor", book.FirstAuthorName);
 
-        cmd.Parameters.AddWithValue("@secondAuthor", book.SecondAuthorName);
+        cmd.Parameters.AddWithValue("@SecondAuthor", book.SecondAuthorName);
 
         cmd.Parameters.AddWithValue("@rating", book.Rating);
 

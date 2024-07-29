@@ -6,7 +6,7 @@ namespace serverSide.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorssController : ControllerBase
+    public class AuthorsController : ControllerBase
     {
         // GET: api/<AuthorsController>
         [HttpGet]

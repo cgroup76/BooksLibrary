@@ -5,8 +5,8 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
-using Task1.BL;
 using System.Data.Common;
+using serverSide.BL;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -35,7 +35,7 @@ public class DBservicesUsers
     //--------------------------------------------------------------------------------------------------
     // This method adds a new user to the users table 
     //--------------------------------------------------------------------------------------------------
-    public int AddNewUser(User user )
+    public int AddNewUser(IUser user )
     {
 
         SqlConnection con;
@@ -80,7 +80,7 @@ public class DBservicesUsers
     // Create the SqlCommand using a stored procedure to add new user
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProcedureAddNewUser(String spName, SqlConnection con, User user)
+    private SqlCommand CreateCommandWithStoredProcedureAddNewUser(String spName, SqlConnection con, IUser user)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -93,7 +93,7 @@ public class DBservicesUsers
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
 
-        cmd.Parameters.AddWithValue("@name", user.userNameName);
+        cmd.Parameters.AddWithValue("@name", user.UserName);
 
         cmd.Parameters.AddWithValue("@email", user.EMail);
 
@@ -106,7 +106,7 @@ public class DBservicesUsers
     //--------------------------------------------------------------------------------------------------
     // login user
     //--------------------------------------------------------------------------------------------------
-    public int logInUser(User user)
+    public int logInUser(IUser user)
     {
 
         SqlConnection con;
@@ -200,7 +200,7 @@ public class DBservicesUsers
             if (dataReader.HasRows)
             {
                 dataReader.Read();
-                user.Name = Convert.ToString(dataReader["name"]);
+                user.UserName = Convert.ToString(dataReader["name"]);
                 user.IsAdmin = (Convert.ToInt32(dataReader["isAdmin"])== 1);
                 user.Id = Convert.ToInt32(dataReader["userId"]);
 
@@ -251,47 +251,47 @@ public class DBservicesUsers
     //--------------------------------------------------------------------------------------------------
     // This method logout the log in user
     //--------------------------------------------------------------------------------------------------
-    public void logOut() 
-    {
+    //public void logOut() 
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        cmd = CreateCommandWithStoredProcedureLogOut("Logout", con);             // create the command
+    //    cmd = CreateCommandWithStoredProcedureLogOut("Logout", con);             // create the command
 
 
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+    //    try
+    //    {
+    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
           
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
 
 
     

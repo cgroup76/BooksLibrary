@@ -5,8 +5,8 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
-using Task1.BL;
 using System.Data.Common;
+using serverSide.BL;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -51,7 +51,7 @@ public class DBservicesAuthor
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedureAddNewUser("addNewAuthor", con, author);             // create the command
+        cmd = CreateCommandWithStoredProcedureAddNewAuthor("addNewAuthor", con, author);             // create the command
 
         try
         {
@@ -93,11 +93,9 @@ public class DBservicesAuthor
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
 
-        cmd.Parameters.AddWithValue("@name", author.name);
-
-        cmd.Parameters.AddWithValue("@id", author.id);
-
+        cmd.Parameters.AddWithValue("@name", author.Name);
 
         return cmd;
     }
+}
 
