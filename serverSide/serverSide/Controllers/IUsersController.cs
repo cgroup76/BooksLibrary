@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using serverSide.BL;
+using System.Dynamic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +20,18 @@ namespace serverSide.Controllers
 
         // POST sign up new user
         [HttpPost("signUpNewUser")]
-        public bool Post([FromBody] IUser newUser)
+        public IActionResult Post([FromBody] IUser newUser)
         {
-            return newUser.Insert(newUser);
+            if (newUser.Insert(newUser))
+            {
+                dynamic userDetails = new ExpandoObject();
+
+                userDetails.userId = newUser.Id;
+                userDetails.userName = newUser.UserName;
+
+                return Ok(userDetails);
+            }
+            return BadRequest();
         }
         // POST api/<IUsersController>
         [HttpPost("addNewBookToUser")]
