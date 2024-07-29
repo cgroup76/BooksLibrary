@@ -50,37 +50,8 @@
     <section class="books py-5">
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 1</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 2</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 3</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id="topBooks">
+          
             </div>
         </div>
     </section>
@@ -134,8 +105,11 @@
     
     <script>
         var usersAPI = "https://localhost:7225/api/IUsers";
+        var booksAPI = "https://localhost:7225/api/Books";
 
         $(document).ready(function () {
+
+            showTopBooks();
 
             // hide user name box
             $('.userNameBox').hide();
@@ -150,7 +124,7 @@
 
             // submit form
             $('#logInButton').click(loginUser);
-           // $('#signupButton').click(signupNewUser);
+            $('#signupButton').click(signupNewUser);
 
            // logout user
             $('.logout').click(logoutUser);
@@ -199,22 +173,37 @@
 
         function loginUser() {
 
-            let user = {
-                "id": 0,
-                "userName": "",
-                "eMail": $('#userEmail').val(),
-                "password": $('#userPassword').val(),
-                "isAdmin": false,
-                "isActive": true,
-                "isLogIn": true
+            var regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+            var userEmail = $('#userEmail').val();
+            var userPassword = $('#userPassword').val();
+
+            // check email and password in the correct format
+            if (regexEmail.test(userEmail) && userPassword.length >= 3) {
+
+                let user = {
+                    "id": 0,
+                    "userName": "",
+                    "eMail": userEmail,
+                    "password": userPassword,
+                    "isAdmin": false,
+                    "isActive": true,
+                    "isLogIn": true
+                }
+
+                ajaxCall("PUT", usersAPI + '/loginUser', JSON.stringify(user), successLogin, error);
             }
-      
-            ajaxCall("PUT", usersAPI + '/loginUser', JSON.stringify(user), success, error);
+            else {
+                Swal.fire({
+                    title: "Invalide email or password",
+                    text: "Please check email in the correct format & password is more than 2 digits."
+                });
+            }
 
             return false;
         }
 
-        function success(userDetails) {
+        function successLogin(userDetails) {
 
             localStorage.setItem("loginUserDetails", JSON.stringify(userDetails));
 
@@ -226,12 +215,98 @@
             closeLoginForm();
         }
 
-        function error(errorMassage) { console.log(errorMassage); }
+        function error(errorMassage) { Swal.fire("Incorrect email or password"); }
 
         // logout user
+
         function logoutUser() {
 
+            let userIdToLogout = JSON.parse(localStorage.getItem("loginUserDetails")).userId
+         
+            ajaxCall("PUT", usersAPI + "/logoutUser", JSON.stringify(userIdToLogout), successLogout, errorLogout)
         }
+
+        function successLogout(status) {
+
+            if (status) {
+
+                localStorage.clear();
+
+                $('.userNameBox').hide();
+                $('.logoutBox').hide();
+                $('.loginBox').show();
+                $('.userName').text("");
+            }
+        }
+
+        function errorLogout(errorMassage) { console.log(errorMassage); }
+
+        // signup new user
+
+        function signupNewUser() {
+
+            var regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+            var userEmail = $('#userEmail').val();
+            var userPassword = $('#userPassword').val();
+            var userName = $('#userName').val();
+
+            if (userName == "") { Swal.fire("Please enter a user name"); return; }
+
+            // check email and password in the correct format
+            if (regexEmail.test(userEmail) && userPassword.length >= 3) {
+
+                let newUser = {
+                    "id": 0,
+                    "userName": userName,
+                    "eMail": userEmail,
+                    "password": userPassword,
+                    "isAdmin": false,
+                    "isActive": true,
+                    "isLogIn": true
+                }
+
+                ajaxCall("POST", usersAPI + "/signUpNewUser", JSON.stringify(newUser), successLogin, errorSignup)
+            }
+            else {
+                Swal.fire({
+                    title: "Invalide email or password",
+                    text: "Please check email in the correct format & password is more than 2 digits."
+                });
+            }
+
+            return false;
+        }
+
+        function errorSignup(errorMassage) { console.log(errorMassage); }
+
+        // show top books
+
+        function showTopBooks() {
+            ajaxCall("GET", booksAPI, null, topBooksToShow, errorToLoadBooks )
+        }
+        function topBooksToShow(books) {
+            const topBooksContainer = document.getElementById('topBooks');
+            let booksHtml = '';
+
+            books.forEach((book) => {
+                booksHtml += `
+            <div class='col-md-4'>
+                <div class='card mb-4 book-card'>
+                    <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>${book.Title}</h5>
+                        <p class='card-text'>A short description of the book.</p>
+                        <a href='#' class='btn btn-primary'>Buy</a>
+                    </div>
+                </div>
+            </div>`;
+            });
+
+            topBooksContainer.innerHTML = booksHtml;
+        }
+
+        function errorToLoadBooks(message) { console.log(message); }
     </script>
 </body>
 </html>

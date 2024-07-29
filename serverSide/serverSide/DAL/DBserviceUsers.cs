@@ -53,7 +53,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedureAddNewUser("AddNewUserBook", con, user);             // create the command
+        cmd = CreateCommandWithStoredProcedureAddNewUser("AddNewIUser", con, user);             // create the command
 
         try
         {
