@@ -11,11 +11,11 @@ namespace serverSide.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        // GET: api/<BooksController> get all available books
+        // GET: api/<BooksController> get all  books
         [HttpGet]
         public IEnumerable<Book> Get()
         {
-            return Book.showAvailableBooks();
+            return Book.showBooks();
         }
 
         // GET api/<BooksController>/5

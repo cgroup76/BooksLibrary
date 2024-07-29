@@ -76,11 +76,11 @@
 
             return 1 == dBserviecesBooks.AddNewBook(book);
         }
-        //show all Available Books
-        public static List<Book> showAvailableBooks(){
+        //show all Books
+        public static List<Book> showBooks(){
             DBservicesBooks dBserviecesBooks = new DBservicesBooks();
 
-            return dBserviecesBooks.GetAvailableBooks();
+            return dBserviecesBooks.getAllBooks();
             }
     }
 

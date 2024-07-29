@@ -130,10 +130,10 @@ public class DBservicesBooks
 
 
     //--------------------------------------------------------------------------------------------------
-    // This method show all available books 
+    // This method show all  books 
     //--------------------------------------------------------------------------------------------------
 
-    public List<Book> GetAvailableBooks()
+    public List<Book> getAllBooks()
 
     {
 
@@ -150,7 +150,7 @@ public class DBservicesBooks
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedureGetAvailableBooks("getAllAvailableBooks", con);             // create the command
+        cmd = CreateCommandWithStoredProcedureGetBooks("getAllBooks", con);             // create the command
 
 
         List<Book> Books = new List<Book>();
@@ -205,10 +205,10 @@ public class DBservicesBooks
 
 
     //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure to get available books 
+    // Create the SqlCommand using a stored procedure to get books 
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProcedureGetAvailableBooks(String spName, SqlConnection con)
+    private SqlCommand CreateCommandWithStoredProcedureGetBooks(String spName, SqlConnection con)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
