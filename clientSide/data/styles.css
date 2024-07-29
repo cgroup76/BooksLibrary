@@ -129,6 +129,6 @@ li {
 }
 
 /* books */
-.book-card img{
-    height: 100px;
+.card-img-top{
+    height: 250px
 }

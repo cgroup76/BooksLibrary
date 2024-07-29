@@ -182,12 +182,13 @@ public class DBservicesBooks
                 book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]);
                 book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
                 book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
+                book.UserName = Convert.ToString(dataReader["userName"]);
 
                 book.UserId = Convert.ToString(dataReader["userid"]);
                 book.IsRead = Convert.ToString(dataReader["isRead"]);
 
                 // if no user bought the book
-                if (book.UserId == "" || book.IsRead == "") { continue; }
+                if (book.UserId == "" || book.IsRead == "") { }
 
                 else // if someone bought the book
                 {

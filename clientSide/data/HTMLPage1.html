@@ -107,9 +107,11 @@
         var usersAPI = "https://localhost:7225/api/IUsers";
         var booksAPI = "https://localhost:7225/api/Books";
 
+        var allBooks = [];
+
         $(document).ready(function () {
 
-            showTopBooks();
+            showBooks();
 
             // hide user name box
             $('.userNameBox').hide();
@@ -128,6 +130,7 @@
 
            // logout user
             $('.logout').click(logoutUser);
+
         })
 
         // login or signup form
@@ -280,13 +283,19 @@
 
         function errorSignup(errorMassage) { console.log(errorMassage); }
 
-        // show top books
+        // show books
 
-        function showTopBooks() {
-            ajaxCall("GET", booksAPI, null, topBooksToShow, errorToLoadBooks )
+        function showBooks() {
+
+            if (allBooks.length == 0) {
+                ajaxCall("GET", booksAPI, null, BooksToShow, errorToLoadBooks);
+            }
+            else { BooksToShow(allBooks); }
         }
-        function topBooksToShow(books) {
-            const topBooksContainer = document.getElementById('topBooks');
+
+        function BooksToShow(books) {
+            
+            const BooksContainer = document.getElementById('topBooks');
             let booksHtml = '';
 
             books.forEach((book) => {
@@ -296,17 +305,46 @@
                     <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
                     <div class='card-body'>
                         <h5 class='card-title'>${book.Title}</h5>
-                        <p class='card-text'>A short description of the book.</p>
-                        <a href='#' class='btn btn-primary'>Buy</a>
-                    </div>
-                </div>
-            </div>`;
+                        <p class='card-text'>${book.Price}$</p>`;
+
+                // if someone already bought the book
+                if (book.IsAvailable == 0) {
+                    booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.UserId},${book.Id})'>Buy from ${book.UserName}</a>
+                                     </div >
+                                   </div >
+                                 </div >`;
+                }
+
+                // no one bought the book
+                else {
+                    booksHtml += `<a class='btn btn-primary' onclick='buyABook("",${book.Id})'>Buy</a>
+                                     </div >
+                                   </div >
+                                 </div >`;
+                }
             });
 
-            topBooksContainer.innerHTML = booksHtml;
+            BooksContainer.innerHTML = booksHtml;
         }
 
         function errorToLoadBooks(message) { console.log(message); }
+
+        // buy a book
+
+        function buyABook(bookId, sellerId) {
+
+            var buyer = JSON.parse(localStorage.getItem("loginUserDetails")).userId
+
+            // if the book is owned by someone
+            if (sellerId != "") {
+
+                ajaxCall("PUT", usersAPI)
+            }
+
+            else {
+                ajaxCall("POST", usersAPI + '/addNewBookToUser?userId=' + buyer + '&bookId=' + bookId + '', null, successToBuyABook, errorBuyABook);
+            }
+        }
     </script>
 </body>
 </html>
