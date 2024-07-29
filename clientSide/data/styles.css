@@ -127,3 +127,8 @@ li {
 #logoutColor {
     color: darkred;
 }
+
+/* books */
+.book-card img{
+    height: 100px;
+}

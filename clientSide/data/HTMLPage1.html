@@ -50,37 +50,8 @@
     <section class="books py-5">
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 1</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 2</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 book-card">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Book 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Sample Book 3</h5>
-                            <p class="card-text">A short description of the book.</p>
-                            <a href="#" class="btn btn-primary">Buy</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id="topBooks">
+          
             </div>
         </div>
     </section>
@@ -134,8 +105,11 @@
     
     <script>
         var usersAPI = "https://localhost:7225/api/IUsers";
+        var booksAPI = "https://localhost:7225/api/Books";
 
         $(document).ready(function () {
+
+            showTopBooks();
 
             // hide user name box
             $('.userNameBox').hide();
@@ -305,6 +279,34 @@
         }
 
         function errorSignup(errorMassage) { console.log(errorMassage); }
+
+        // show top books
+
+        function showTopBooks() {
+            ajaxCall("GET", booksAPI, null, topBooksToShow, errorToLoadBooks )
+        }
+        function topBooksToShow(books) {
+            const topBooksContainer = document.getElementById('topBooks');
+            let booksHtml = '';
+
+            books.forEach((book) => {
+                booksHtml += `
+            <div class='col-md-4'>
+                <div class='card mb-4 book-card'>
+                    <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>${book.Title}</h5>
+                        <p class='card-text'>A short description of the book.</p>
+                        <a href='#' class='btn btn-primary'>Buy</a>
+                    </div>
+                </div>
+            </div>`;
+            });
+
+            topBooksContainer.innerHTML = booksHtml;
+        }
+
+        function errorToLoadBooks(message) { console.log(message); }
     </script>
 </body>
 </html>

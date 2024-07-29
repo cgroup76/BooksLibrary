@@ -7,6 +7,7 @@ using System.Data;
 using System.Text;
 using System.Data.Common;
 using serverSide.BL;
+using System.Dynamic;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -133,7 +134,7 @@ public class DBservicesBooks
     // This method show all  books 
     //--------------------------------------------------------------------------------------------------
 
-    public List<Book> getAllBooks()
+    public List<object> getAllBooks()
 
     {
 
@@ -153,7 +154,7 @@ public class DBservicesBooks
         cmd = CreateCommandWithStoredProcedureGetBooks("getAllBooks", con);             // create the command
 
 
-        List<Book> Books = new List<Book>();
+        List<dynamic> Books = new List<dynamic>();
 
         try
         {
@@ -161,7 +162,7 @@ public class DBservicesBooks
 
             while (dataReader.Read())
             {
-                Book book = new Book();
+                dynamic book = new ExpandoObject();
                 book.Id = Convert.ToInt32(dataReader["id"]);
                 book.Title = Convert.ToString(dataReader["title"]);
                 book.SubTitle = Convert.ToString(dataReader["subTitle"]);
@@ -175,12 +176,25 @@ public class DBservicesBooks
                 book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]);
                 book.Description = Convert.ToString(dataReader["description"]);
                 book.PreviewLink = Convert.ToString(dataReader["previewLink"]);
-                book.PublishDate = Convert.ToString(dataReader["publishDate"]);
+                book.PublishDate = Convert.ToString(dataReader["publishedDate"]);
                 book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]);
                 book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]);
                 book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]);
                 book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
                 book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
+
+                book.UserId = Convert.ToString(dataReader["userid"]);
+                book.IsRead = Convert.ToString(dataReader["isRead"]);
+
+                // if no user bought the book
+                if (book.UserId == "" || book.IsRead == "") { continue; }
+
+                else // if someone bought the book
+                {
+                    book.UserId = Convert.ToInt32(dataReader["userid"]);
+                    book.IsRead = (Convert.ToInt32(dataReader["isRead"]) == 1);
+                }
+            
                 Books.Add(book);
 
             }

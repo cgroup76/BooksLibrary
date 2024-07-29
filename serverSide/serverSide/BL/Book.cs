@@ -77,7 +77,7 @@
             return 1 == dBserviecesBooks.AddNewBook(book);
         }
         //show all Books
-        public static List<Book> showBooks(){
+        public static List<object> showBooks(){
             DBservicesBooks dBserviecesBooks = new DBservicesBooks();
 
             return dBserviecesBooks.getAllBooks();

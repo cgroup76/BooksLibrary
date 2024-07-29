@@ -11,9 +11,9 @@ namespace serverSide.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        // GET: api/<BooksController> get all  books
+        // GET - get all books
         [HttpGet]
-        public IEnumerable<Book> Get()
+        public IEnumerable<object> Get()
         {
             return Book.showBooks();
         }
