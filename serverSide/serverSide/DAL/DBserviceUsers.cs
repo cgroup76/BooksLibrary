@@ -479,6 +479,76 @@ public class DBservicesUsers
         return cmd;
     }
 
-=======
->>>>>>> Stashed changes
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to mark book as read by user 
+    //---------------------------------------------------------------------------------
+
+
+    public int readBookByUser(int bookId,int userId)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProcedurereadBookByUser("ReadBook", con,bookId, userId);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to mark book as read by user
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProcedurereadBookByUser(String spName, SqlConnection con, int bookId,int userId)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+        cmd.Parameters.AddWithValue("@bookId",bookId);
+
+        cmd.Parameters.AddWithValue("@userId",userId);
+
+        return cmd;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using serverSide.BL;
+using System.Data.SqlClient;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,11 +11,11 @@ namespace serverSide.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        // GET: api/<BooksController>
+        // GET: api/<BooksController> get all available books
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Book> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Book.showAvailableBooks();
         }
 
         // GET api/<BooksController>/5
@@ -42,4 +44,6 @@ namespace serverSide.Controllers
         {
         }
     }
+
+
 }

@@ -82,6 +82,15 @@ namespace serverSide.BL
 
             return true;
         }
+        //mark book as read by user 
+        public static bool readBook(int userId, int bookId)
+        {
+            DBservicesUsers dbservicesUsers = new DBservicesUsers();
+
+            dbservicesUsers.readBookByUser(bookId,userId);
+
+            return true;
+        }
 
 
 

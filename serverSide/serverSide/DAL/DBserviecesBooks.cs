@@ -128,5 +128,102 @@ public class DBservicesBooks
         return cmd;
     }
 
+
+    //--------------------------------------------------------------------------------------------------
+    // This method show all available books 
+    //--------------------------------------------------------------------------------------------------
+
+    public List<Book> GetAvailableBooks()
+
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProcedureGetAvailableBooks("getAllAvailableBooks", con);             // create the command
+
+
+        List<Book> Books = new List<Book>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Book book = new Book();
+                book.Id = Convert.ToInt32(dataReader["id"]);
+                book.Title = Convert.ToString(dataReader["title"]);
+                book.SubTitle = Convert.ToString(dataReader["subTitle"]);
+                book.IsEbook = Convert.ToByte(dataReader["isEbook"]);
+                book.IsActive = Convert.ToByte(dataReader["isActive"]);
+                book.IsAvailable = Convert.ToByte(dataReader["isAvailable"]);
+                book.Price = (float)Convert.ToDouble(dataReader["price"]);
+                book.Category = Convert.ToString(dataReader["category"]);
+                book.SmallThumbnail = Convert.ToString(dataReader["smallThumbnail"]);
+                book.Thumbnail = Convert.ToString(dataReader["thumbnail"]);
+                book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]);
+                book.Description = Convert.ToString(dataReader["description"]);
+                book.PreviewLink = Convert.ToString(dataReader["previewLink"]);
+                book.PublishDate = Convert.ToString(dataReader["publishDate"]);
+                book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]);
+                book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]);
+                book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]);
+                book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
+                book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
+                Books.Add(book);
+
+            }
+            return Books;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to get available books 
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProcedureGetAvailableBooks(String spName, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+
+        return cmd;
+    }
+
 }
 

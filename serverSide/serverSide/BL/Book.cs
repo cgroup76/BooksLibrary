@@ -43,7 +43,7 @@
             this.previewLink = previewLink;
             this.publishDate = publishDate;
             this.firstAuthorName = firstAuthorName;
-            this.secondAuthorName = secondAuthorName; 
+            this.secondAuthorName = secondAuthorName;
             this.numOfReviews = numOfReviews;
             this.rating = rating;
             this.textSnippet = textSnippet;
@@ -76,6 +76,12 @@
 
             return 1 == dBserviecesBooks.AddNewBook(book);
         }
+        //show all Available Books
+        public static List<Book> showAvailableBooks(){
+            DBservicesBooks dBserviecesBooks = new DBservicesBooks();
+
+            return dBserviecesBooks.GetAvailableBooks();
+            }
     }
 
 }

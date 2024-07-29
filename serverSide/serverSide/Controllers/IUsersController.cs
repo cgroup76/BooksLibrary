@@ -54,6 +54,12 @@ namespace serverSide.Controllers
 
             else { return BadRequest(); }
         }
+        // PUT book as read by user 
+        [HttpPut("readBookByUser")]
+        public bool Put(int bookId, int userId)
+        {
+            return IUser.readBook(bookId, userId);
+        }
 
         // DELETE api/<IUsersController>/5
         [HttpDelete("{id}")]
