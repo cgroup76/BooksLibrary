@@ -22,11 +22,13 @@ namespace serverSide.Controllers
         [HttpPost("signUpNewUser")]
         public IActionResult Post([FromBody] IUser newUser)
         {
-            if (newUser.Insert(newUser))
+            int newUserId = newUser.Insert(newUser);
+
+            if (newUserId != 0)
             {
                 dynamic userDetails = new ExpandoObject();
 
-                userDetails.userId = newUser.Id;
+                userDetails.userId = newUserId;
                 userDetails.userName = newUser.UserName;
 
                 return Ok(userDetails);

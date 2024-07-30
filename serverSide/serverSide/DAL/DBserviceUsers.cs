@@ -37,11 +37,12 @@ public class DBservicesUsers
     //--------------------------------------------------------------------------------------------------
     // This method adds a new user to the users table 
     //--------------------------------------------------------------------------------------------------
-    public int AddNewUser(IUser user )
+    public int AddNewUser(IUser user, int timeout)
     {
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlParameter newUserId = new SqlParameter("@userId", SqlDbType.Int); // the new user id value
 
         try
         {
@@ -53,11 +54,16 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedureAddNewUser("AddNewIUser", con, user);             // create the command
+        cmd = CreateCommandWithStoredProcedureAddNewUser("AddNewIUser", con, user, timeout);             // create the command
+
+        newUserId.Direction = ParameterDirection.Output;
+        cmd.Parameters.Add(newUserId);
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            cmd.ExecuteNonQuery(); // execute the command
+
+            int numEffected = (int)cmd.Parameters["@userId"].Value; // get the return value
             return numEffected;
         }
         catch (Exception ex)
@@ -82,7 +88,7 @@ public class DBservicesUsers
     // Create the SqlCommand using a stored procedure to add new user
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProcedureAddNewUser(String spName, SqlConnection con, IUser user)
+    private SqlCommand CreateCommandWithStoredProcedureAddNewUser(String spName, SqlConnection con, IUser user, int timeout)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -101,6 +107,8 @@ public class DBservicesUsers
 
         cmd.Parameters.AddWithValue("@password", user.Password);
 
+        cmd.Parameters.AddWithValue("@timeout", timeout);
+
         return cmd;
     }
 
@@ -108,7 +116,7 @@ public class DBservicesUsers
     //--------------------------------------------------------------------------------------------------
     // login user - return user id
     //--------------------------------------------------------------------------------------------------
-    public object logInUser(IUser user)
+    public object logInUser(IUser user, int timeout)
     {
 
         SqlConnection con;
@@ -124,7 +132,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedurelogInUser("LoginIUser", con, user);             // create the command
+        cmd = CreateCommandWithStoredProcedurelogInUser("LoginIUser", con, user, timeout);             // create the command
 
         dynamic userDetails = new ExpandoObject(); // create a dynamic object 
         try
@@ -160,7 +168,7 @@ public class DBservicesUsers
     // Create the SqlCommand using a stored procedure to login user
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProcedurelogInUser(String spName, SqlConnection con, IUser user)
+    private SqlCommand CreateCommandWithStoredProcedurelogInUser(String spName, SqlConnection con, IUser user, int timeout)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -176,6 +184,8 @@ public class DBservicesUsers
         cmd.Parameters.AddWithValue("@email", user.EMail);
 
         cmd.Parameters.AddWithValue("@password", user.Password);
+
+        cmd.Parameters.AddWithValue("@sessionTimeOut", timeout);
 
         return cmd;
     }
@@ -257,6 +267,7 @@ public class DBservicesUsers
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlParameter returnValue = new SqlParameter(); // add a return value parameter
 
         try
         {
@@ -270,9 +281,15 @@ public class DBservicesUsers
 
         cmd = CreateCommandWithStoredProcedureaddNewbookToUser("addNewbookToUser", con, userID, bookID);             // create the command
 
+        returnValue.ParameterName = "@RETURN_VALUE";
+        returnValue.Direction = ParameterDirection.ReturnValue;
+        cmd.Parameters.Add(returnValue);
+
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            cmd.ExecuteNonQuery(); // execute the command
+
+            int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value; // get the return value
             return numEffected;
         }
         catch (Exception ex)

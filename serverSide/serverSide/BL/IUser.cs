@@ -5,6 +5,8 @@ namespace serverSide.BL
 {
     public class IUser
     {
+        public static readonly int TIMEOUT = 20; // SET A GLOBAL VALUE FOR THE SESSION TIMEOUT -> CAN BE CHANGED AND MODIFY SO WE SAVE IN THE CODE
+
         int id;
         string userName = string.Empty;
         string eMail = string.Empty;
@@ -36,13 +38,15 @@ namespace serverSide.BL
 
 
         // add new user
-        public bool Insert(IUser newUser)
+        public int Insert(IUser newUser)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
-            if (dBservicesUsers.AddNewUser(newUser) == 1) return true;
+            int newUserId = dBservicesUsers.AddNewUser(newUser, TIMEOUT);
 
-            else return false;
+            if ( newUserId != 0) return newUserId; // success to add user
+
+            else return 0;
         }
 
 
@@ -69,7 +73,7 @@ namespace serverSide.BL
         {
             DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
-            return dbservicesUsers.logInUser(LoginUser);
+            return dbservicesUsers.logInUser(LoginUser, TIMEOUT);
 
         }
         // logout a user - because there is always one user logged in the logout make the islogin = false
