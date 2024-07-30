@@ -56,6 +56,8 @@ public class DBservicesUsers
 
         cmd = CreateCommandWithStoredProcedureAddNewUser("AddNewIUser", con, user, timeout);             // create the command
 
+        // create an output parameter to get back from the store presigere 
+
         newUserId.Direction = ParameterDirection.Output;
         cmd.Parameters.Add(newUserId);
 
@@ -280,6 +282,8 @@ public class DBservicesUsers
         }
 
         cmd = CreateCommandWithStoredProcedureaddNewbookToUser("addNewbookToUser", con, userID, bookID);             // create the command
+
+        // create an return parameter to get back from the store presigere 
 
         returnValue.ParameterName = "@RETURN_VALUE";
         returnValue.Direction = ParameterDirection.ReturnValue;
