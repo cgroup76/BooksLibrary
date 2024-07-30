@@ -39,9 +39,13 @@ namespace serverSide.Controllers
         [HttpPost("addNewBookToUser")]
         public IActionResult Post( int userId, int bookId)
         {
-            if(IUser.addNewBook(userId, bookId)) { return Ok(true); }
+            int status = IUser.addNewBook(userId, bookId);
 
-            return BadRequest();
+            if (status == 1) { return Ok(true); }
+
+            else if(status == 0) { return NotFound(false); }
+
+            return Unauthorized("user session has ended");
         }
 
         // PUT logout user by id
@@ -59,7 +63,7 @@ namespace serverSide.Controllers
 
             if (((IDictionary<string, object>)loggedinUserDetails).Any()) { return Ok(loggedinUserDetails); } // checks if the object is not empty
 
-            else { return BadRequest(); }
+            else { return NotFound(); }
         }
         // PUT book as read by user 
         [HttpPut("readBookByUser")]

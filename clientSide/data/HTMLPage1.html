@@ -333,24 +333,29 @@
 
         function buyABook(bookId, sellerId) {
 
-            var buyer = JSON.parse(localStorage.getItem("loginUserDetails")).userId
-           
+            var buyer = JSON.parse(localStorage.getItem("loginUserDetails"))
+
             // if the book is owned by someone
             if (sellerId != "") {
-
+                Swal.fire("NO");
                 //ajaxCall("PUT", usersAPI + '/saleAndBuyBook?byerId=' + buyer + '&sellerId=' + sellerId + '&bookId=' + bookId, null, successToBuyABook, errorBuyABook);
             }
 
-            else {
+            else if (buyer != null) {
+
+                buyer = buyer.userId; // set the buyer id from the json
+
                 ajaxCall("POST", usersAPI + '/addNewBookToUser?userId=' + buyer + '&bookId=' + bookId + '', null, successToBuyABook, errorBuyABook);
             }
+
+            else { Swal.fire("Please login first"); }
         }
 
         function successToBuyABook(status) {
 
             console.log(status);
         }
-        function errorBuyABook() { localStorage.clear(); }
+        function errorBuyABook(ee) { console.log(ee); }
     </script>
 </body>
 </html>

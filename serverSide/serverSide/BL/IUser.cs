@@ -52,11 +52,11 @@ namespace serverSide.BL
 
 
         // Add new book to the user's books list
-        public static bool addNewBook(int userId, int bookId)
+        public static int addNewBook(int userId, int bookId)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
-            return 1 == dBservicesUsers.addNewbookToUser(userId,bookId);
+            return dBservicesUsers.addNewbookToUser(userId,bookId);
 
         }
 
