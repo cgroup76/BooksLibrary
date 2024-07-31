@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- JQuary -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+
+    <!-- sweet aleret -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="logo">
+                    <h1 class="h3">Book Store</h1>
+                </div>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link text-white" href="HTMLPage1.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Authors</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
+                        <li class="nav-item logoutBox"><a class="nav-link text-white logout">logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero text-center py-5">
+        <div class="container">
+            <h2 class="display-4">My Libary</h2>
+            <p class="lead">All of my books:</p>
+        </div>
+    </section>
+
+    <section class="books py-5">
+        <div class="container">
+            <h2 class="text-center text-white mb-5">Recommended Books</h2>
+            <div class="row" id="myBooks">
+          
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p>All rights reserved © 2024 Book Store</p>
+        </div>
+    </footer>
+
+
+    <div id="overlay" class=""></div>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+    <!---------------->
+
+    
+    <script>
+        var usersAPI = "https://localhost:7225/api/IUsers";
+        var booksAPI = "https://localhost:7225/api/Books";
+
+        var allBooks = [];
+
+        $(document).ready(function () {
+
+            showMyBooks();
+
+
+           // logout user
+            $('.logout').click(logoutUser);
+
+        })
+
+
+        //-----------------------
+        // JavaScript source code
+        function ajaxCall(method, api, data, successCB, errorCB) {
+            $.ajax({
+                type: method,
+                url: api,
+                data: data,
+                cache: false,
+                contentType: "application/json",
+                dataType: "json",
+                success: successCB,
+                error: errorCB
+            });
+        }
+        //-----------------------
+
+
+        // logout user
+
+        function logoutUser() {
+
+            let userIdToLogout = JSON.parse(localStorage.getItem("loginUserDetails")).userId
+         
+            ajaxCall("PUT", usersAPI + "/logoutUser", JSON.stringify(userIdToLogout), successLogout, errorLogout)
+
+
+        }
+
+        function successLogout(status) {
+
+            if (status) {
+
+                localStorage.clear();
+                window.location.href = "HTMLPage1.html"
+            }
+        }
+
+        function errorLogout(errorMassage) { console.log(errorMassage); }
+
+       //show my books:
+
+        function showMyBooks() {
+            let userDetails = JSON.parse(localStorage.getItem("loginUserDetails"))
+                ajaxCall("GET", usersAPI, userDetails.userId, BooksToShow, errorToLoadBooks);
+        
+        }
+
+        function BooksToShow(books) {
+            
+            const BooksContainer = document.getElementById('myBooks');
+            let booksHtml = '';
+
+            books.forEach((book) => {
+                booksHtml += `
+                         <div class='col-md-4'>
+                         <div class='card mb-4 book-card'>
+                         <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                         <div class='card-body'>
+                         <h5 class='card-title'>${book.Title}</h5>`;
+
+                // if user isn't read the book yet the book
+                if (book.IsRead == 0) {
+                    booksHtml += `<a class='btn btn-primary' onclick='ReadTheBook(${book.UserId},${book.Id})'>Finish To Read</a> 
+                                     </div >
+                                   </div >
+                                 </div >`;
+                }
+
+                
+                else {
+                    booksHtml += `<a class='btn btn-primary'>Already read this book</a>
+                                     </div >
+                                   </div >
+                                 </div >`;
+                }
+            });
+
+            BooksContainer.innerHTML = booksHtml;
+        }
+
+        function errorToLoadBooks(message) { console.log(message); }
+        function ReadTheBook(userId,bookId)
+        {
+            ajaxCall("PUT", usersAPI+"להוסיף",null,successToMarkAsRead, errorToMarkAsRead);
+
+        }
+        function successToMarkAsRead()
+        {
+
+        }
+        function errorToMarkAsRead(){}
+    </script>
+</body>
+</html>

@@ -27,7 +27,7 @@
                 <nav>
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#">My Books</a></li>
+                        <li class="nav-item myBooks"><a class="nav-link text-white " href="myBooks.html">My Books</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">Authors</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
                         <li class="nav-item loginBox"><a class="nav-link text-white login">login</a></li>
@@ -116,6 +116,9 @@
             // hide user name box
             $('.userNameBox').hide();
             $('.logoutBox').hide();
+
+            //hide myBooksPage
+            $('.myBooks').hide()
 
             // log in or sign up forms
             $('.login').click(showLoginForm);
@@ -214,6 +217,7 @@
             $('.logoutBox').show();
             $('.loginBox').hide();
             $('.userName').text(userDetails.userName);
+            $('.myBooks').show();
 
             closeLoginForm();
         }

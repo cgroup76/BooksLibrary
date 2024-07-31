@@ -363,7 +363,7 @@ public class DBservicesUsers
         cmd = CreateCommandWithStoredProcedureGetBooksPerUser("GetBooksPerUser", con, userId);             // create the command
 
 
-        List<Book> userBooks = new List<Book>();
+        List<dynamic> userBooks = new List<dynamic>();
 
         try
         {
@@ -371,7 +371,7 @@ public class DBservicesUsers
 
             while (dataReader.Read())
             {
-                Book book = new Book();
+                dynamic book = new ExpandoObject();
                 book.Id = Convert.ToInt32(dataReader["id"]);
                 book.Title = Convert.ToString(dataReader["title"]);
                 book.SubTitle = Convert.ToString(dataReader["subTitle"]);
@@ -391,6 +391,8 @@ public class DBservicesUsers
                 book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]); 
                 book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
                 book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
+                book.UserId = Convert.ToString(dataReader["userid"]);
+                book.IsRead = Convert.ToString(dataReader["isRead"]);
                 userBooks.Add(book);
 
             }
