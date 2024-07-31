@@ -5,7 +5,7 @@ namespace serverSide.BL
 {
     public class IUser
     {
-        public static readonly int TIMEOUT = 20; // SET A GLOBAL VALUE FOR THE SESSION TIMEOUT -> CAN BE CHANGED AND MODIFY SO WE SAVE IN THE CODE
+        public static readonly int TIMEOUT = 1; // SET A GLOBAL VALUE FOR THE SESSION TIMEOUT -> CAN BE CHANGED AND MODIFY SO WE SAVE IN THE CODE
 
         int id;
         string userName = string.Empty;
@@ -86,19 +86,20 @@ namespace serverSide.BL
             return true;
         }
         //mark book as read by user 
-        public static bool readBook(int bookId, int userId)
+        public static int readBook(int bookId, int userId)
         {
             DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
-            return 1 == dbservicesUsers.readBookByUser(bookId,userId);
+            return dbservicesUsers.readBookByUser(bookId,userId);
 
         }
         // Add sale and buy book method
         public static bool saleAndBuyBook(int buyerId,int sellerId, int bookId)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
-            dBservicesUsers.saleAndBuyBook(buyerId, sellerId, bookId);
-            return true;
+
+            return 1 == dBservicesUsers.saleAndBuyBook(buyerId, sellerId, bookId);
+          
 
         }
 

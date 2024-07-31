@@ -67,9 +67,15 @@ namespace serverSide.Controllers
         }
         // PUT book as read by user 
         [HttpPut("readBookByUser")]
-        public bool Put(int bookId, int userId)
+        public IActionResult Put(int bookId, int userId)
         {
-            return IUser.readBook(bookId, userId);
+            int status =  IUser.readBook(bookId, userId);
+
+            if (status == 1) { return Ok(true); }
+
+            else if (status == 0) { return NotFound(false); }
+
+            return Unauthorized("user session has ended");
         }
         // PUT sale and buy books
         [HttpPut("saleAndBuyBook")]

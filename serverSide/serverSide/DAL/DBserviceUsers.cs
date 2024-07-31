@@ -65,8 +65,8 @@ public class DBservicesUsers
         {
             cmd.ExecuteNonQuery(); // execute the command
 
-            int numEffected = (int)cmd.Parameters["@userId"].Value; // get the return value
-            return numEffected;
+            int userId = (int)cmd.Parameters["@userId"].Value; // get the return value
+            return userId;
         }
         catch (Exception ex)
         {
@@ -448,6 +448,7 @@ public class DBservicesUsers
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlParameter returnValue = new SqlParameter();
 
         try
         {
@@ -461,9 +462,15 @@ public class DBservicesUsers
 
         cmd = CreateCommandWithStoredProcedurereadBookByUser("ReadBook", con,bookId, userId);             // create the command
 
+        returnValue.ParameterName = "@RETURN_VALUE";
+        returnValue.Direction = ParameterDirection.ReturnValue;
+        cmd.Parameters.Add(returnValue);
+
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            cmd.ExecuteNonQuery(); // execute the command
+
+            int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value; // get the return value
             return numEffected;
         }
         catch (Exception ex)
@@ -518,6 +525,7 @@ public class DBservicesUsers
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlParameter returnValue = new SqlParameter();
 
         try
         {
@@ -531,9 +539,15 @@ public class DBservicesUsers
 
         cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyerId, sellerId, bookID);             // create the command
 
+        returnValue.ParameterName = "@RETURN_VALUE";
+        returnValue.Direction = ParameterDirection.ReturnValue;
+        cmd.Parameters.Add(returnValue);
+
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            cmd.ExecuteNonQuery(); // execute the command
+
+            int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value;
             return numEffected;
         }
         catch (Exception ex)
