@@ -12,7 +12,7 @@ namespace serverSide.Controllers
     {
         // GET: api/<IUsersController>
         [HttpGet]
-        public IEnumerable<Book> Get(int userId)
+        public List<dynamic> Get(int userId)
         {
             return IUser.showMyBooks(userId);
  

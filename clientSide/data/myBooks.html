@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,7 @@
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
             <div class="row" id="myBooks">
-          
+
             </div>
         </div>
     </section>
@@ -65,31 +65,24 @@
     </div>
     <!---------------->
 
-    
+
     <script>
+
         var usersAPI = "https://localhost:7225/api/IUsers";
         var booksAPI = "https://localhost:7225/api/Books";
 
         var allBooks = [];
 
         $(document).ready(function () {
-
             showMyBooks();
-
-
-           // logout user
             $('.logout').click(logoutUser);
+        });
 
-        })
-
-
-        //-----------------------
-        // JavaScript source code
         function ajaxCall(method, api, data, successCB, errorCB) {
             $.ajax({
                 type: method,
                 url: api,
-                data: data,
+                data: JSON.stringify(data),
                 cache: false,
                 contentType: "application/json",
                 dataType: "json",
@@ -97,83 +90,80 @@
                 error: errorCB
             });
         }
-        //-----------------------
-
-
-        // logout user
 
         function logoutUser() {
-
-            let userIdToLogout = JSON.parse(localStorage.getItem("loginUserDetails")).userId
-         
-            ajaxCall("PUT", usersAPI + "/logoutUser", JSON.stringify(userIdToLogout), successLogout, errorLogout)
-
-
-        }
-
-        function successLogout(status) {
-
-            if (status) {
-
-                localStorage.clear();
-                window.location.href = "HTMLPage1.html"
+            let user = JSON.parse(localStorage.getItem("loginUserDetails"));
+            if (user) {
+                let userIdToLogout = user.userId;
+                ajaxCall("PUT", `${usersAPI}/logoutUser`, userIdToLogout, successLogout, errorLogout);
             }
         }
 
-        function errorLogout(errorMassage) { console.log(errorMassage); }
+        function successLogout(status) {
+            if (status) {
+                localStorage.clear();
+                window.location.href = "HTMLPage1.html";
+            }
+        }
 
-       //show my books:
+        function errorLogout(errorMessage) {
+            console.error(errorMessage);
+            Swal.fire('Error', 'Failed to logout. Please try again.', 'error');
+        }
 
         function showMyBooks() {
-            let userDetails = JSON.parse(localStorage.getItem("loginUserDetails"))
-                ajaxCall("GET", usersAPI, userDetails.userId, BooksToShow, errorToLoadBooks);
-        
+            let userDetails = JSON.parse(localStorage.getItem("loginUserDetails"));
+            if (userDetails) {
+                ajaxCall("GET", `${usersAPI}?userId=${userDetails.userId}`, null, BooksToShow, errorToLoadBooks);
+            }
         }
 
         function BooksToShow(books) {
-            
-            const BooksContainer = document.getElementById('myBooks');
+            const booksContainer = document.getElementById('myBooks');
             let booksHtml = '';
+            allBooks = books;
 
-            books.forEach((book) => {
+            allBooks.forEach((book) => {
                 booksHtml += `
-                         <div class='col-md-4'>
-                         <div class='card mb-4 book-card'>
-                         <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
-                         <div class='card-body'>
-                         <h5 class='card-title'>${book.Title}</h5>`;
-
-                // if user isn't read the book yet the book
-                if (book.IsRead == 0) {
-                    booksHtml += `<a class='btn btn-primary' onclick='ReadTheBook(${book.UserId},${book.Id})'>Finish To Read</a> 
-                                     </div >
-                                   </div >
-                                 </div >`;
+                <div class='col-md-4'>
+                    <div class='card mb-4 book-card'>
+                        <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>${book.Title}</h5>`
+                if (book.IsRead == 'False') {
+                    booksHtml += `<a class='btn btn-primary' onclick='ReadTheBook(${book.UserId}, ${book.Id})'>Mark as read</a>`
+                } else {
+                    booksHtml += `<a class='btn btn-primary'>Already read this book</a>`
                 }
-
-                
-                else {
-                    booksHtml += `<a class='btn btn-primary'>Already read this book</a>
-                                     </div >
-                                   </div >
-                                 </div >`;
-                }
+                booksHtml += `
+                        </div>
+                    </div>
+                </div>`
             });
 
-            BooksContainer.innerHTML = booksHtml;
+            booksContainer.innerHTML = booksHtml;
         }
 
-        function errorToLoadBooks(message) { console.log(message); }
-        function ReadTheBook(userId,bookId)
-        {
-            ajaxCall("PUT", usersAPI+"להוסיף",null,successToMarkAsRead, errorToMarkAsRead);
-
+        function errorToLoadBooks(errorMessage) {
+            console.error(errorMessage);
+            Swal.fire('Error', 'Failed to load books. Please try again.', 'error');
         }
-        function successToMarkAsRead()
-        {
 
+        function ReadTheBook(userId, bookId) {
+            console.log(userId, bookId)
+            ajaxCall("PUT", `${usersAPI}/readBookByUser?bookId=${bookId}&userId=${userId}`, null, successToMarkAsRead, errorToMarkAsRead);
         }
-        function errorToMarkAsRead(){}
+
+        function successToMarkAsRead() {
+            Swal.fire('Success', 'Book marked as read.', 'success');
+            showMyBooks(); // Refresh the books list
+        }
+
+        function errorToMarkAsRead(errorMessage) {
+            console.error(errorMessage);
+            Swal.fire('Error', 'Failed to mark the book as read. Please try again.', 'error');
+        }
+
     </script>
 </body>
 </html>

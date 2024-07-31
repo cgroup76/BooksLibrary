@@ -61,7 +61,7 @@ namespace serverSide.BL
         }
 
         //show all user's books
-        public static List<Book> showMyBooks(int userId)
+        public static List<dynamic> showMyBooks(int userId)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
             return dBservicesUsers.GetBooksPerUser(userId);
@@ -86,13 +86,12 @@ namespace serverSide.BL
             return true;
         }
         //mark book as read by user 
-        public static bool readBook(int userId, int bookId)
+        public static bool readBook(int bookId, int userId)
         {
             DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
-            dbservicesUsers.readBookByUser(bookId,userId);
+            return 1 == dbservicesUsers.readBookByUser(bookId,userId);
 
-            return true;
         }
         // Add sale and buy book method
         public static bool saleAndBuyBook(int buyerId,int sellerId, int bookId)

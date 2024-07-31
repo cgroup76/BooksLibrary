@@ -343,7 +343,7 @@ public class DBservicesUsers
     // This method show all books from specific user
     //--------------------------------------------------------------------------------------------------
 
-    public List<Book> GetBooksPerUser(int userId)
+    public List<dynamic> GetBooksPerUser(int userId)
 
     {
 
@@ -385,7 +385,7 @@ public class DBservicesUsers
                 book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]); 
                 book.Description = Convert.ToString(dataReader["description"]); 
                 book.PreviewLink = Convert.ToString(dataReader["previewLink"]); 
-                book.PublishDate = Convert.ToString(dataReader["publishDate"]); 
+                book.PublishDate = Convert.ToString(dataReader["publishedDate"]); 
                 book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]); 
                 book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]); 
                 book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]); 
