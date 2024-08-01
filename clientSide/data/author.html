@@ -156,16 +156,19 @@
         function showAthourDetails(authorId) {
 
             var authorDiv = document.getElementById(authorId);
-            var author = allAuthors.find(authorId)
+            var author = allAuthors.find(author => author.id === authorId);
 
             authorDiv.innerHTML = `
                         <div class='card'>
                             <div class='card-body'>
                                 <h4 class='card-text'>${author.name}</h4>
-                                <p class='card-text'>${author.da}</p>
-                                <p class='card-text'>${author.name}</p>
-                                <p class='card-text'>${author.name}</p>
-                                <p class='card-text'>${author.name}</p>
+                                <p class='card-text'>${author.dateOfBirth}</p>
+                                <p class='card-text'>${author.dateOfDeath}</p>
+                                <p class='card-text'>${author.age}</p>
+                                <p class='card-text'>${author.nationality}</p>
+                                <p class='card-text'>${author.notableWork}</p>
+                                <p class='card-text'>${author.awards}</p>
+                                <p class='card-text'>${author.description}</p>
                             </div>
                         </div>`;
         }
