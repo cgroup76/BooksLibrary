@@ -12,6 +12,9 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
             crossorigin="anonymous"></script>
+    <!-- boot strap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- sweet aleret -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -33,7 +36,18 @@
                         <li class="nav-item loginBox"><a class="nav-link text-white login">login</a></li>
                         <li class="nav-item userNameBox"><a class="nav-link text-white userName"></a></li>
                         <li class="nav-item logoutBox"><a class="nav-link text-white logout">logout</a></li>
+                        <li class="nav-item dropdown requestBox">
+                            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" id="request" href="#"> </a>
+                            </div>
+                        </li>
                     </ul>
+
                 </nav>
             </div>
         </div>
@@ -51,7 +65,7 @@
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
             <div class="row" id="topBooks">
-          
+
             </div>
         </div>
     </section>
@@ -90,7 +104,7 @@
 
                 <input type="submit" value="Log in" class="btn" id="logInButton" />
                 <input type="submit" value="Sign Up" class="btn" id="signupButton" />
-                
+
                 <div class="signupQuestion"><span>Not registered yet?  </span><a class="signup">signup</a></div>
                 <div class="loginQuestion"><span>Already registered?  </span><a class="login">login</a></div>
             </form>
@@ -101,8 +115,8 @@
         <div id="loader"></div>
     </div>
     <!---------------->
-    <script src="data.js"></script>
-    
+
+
     <script>
         var usersAPI = "https://localhost:7225/api/IUsers";
         var booksAPI = "https://localhost:7225/api/Books";
@@ -126,8 +140,11 @@
             $('#logInButton').click(loginUser);
             $('#signupButton').click(signupNewUser);
 
-           // logout user
+            // logout user
             $('.logout').click(logoutUser);
+
+            //user requst
+            $('.requestBox').click(showRequests);
 
         })
 
@@ -220,7 +237,7 @@
         function logoutUser() {
 
             let userIdToLogout = JSON.parse(localStorage.getItem("loginUserDetails")).userId
-         
+
             ajaxCall("PUT", usersAPI + "/logoutUser", JSON.stringify(userIdToLogout), successLogout, errorLogout)
         }
 
@@ -284,36 +301,35 @@
             }
             else { BooksToShow(allBooks); }
         }
-     
+
         function BooksToShow(books) {
-            
+
             const BooksContainer = document.getElementById('topBooks');
             let booksHtml = '';
 
             books.forEach((book) => {
-               
                 booksHtml += `
-            <div class='col-md-4'>
-                <div class='card mb-4 book-card'>
-                    <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
-                    <div class='card-body'>
-                        <h5 class='card-title'>${book.Title}</h5>
-                        <p class='card-text'>${book.Price}$</p>`;
+                <div class='col-md-4'>
+                    <div class='card mb-4 book-card'>
+                        <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>${book.Title}</h5>
+                            <p class='card-text'>${book.Price}$</p>`;
 
                 // if someone already bought the book
                 if (book.IsAvailable == 0) {
                     booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.UserId},${book.Id})'>Buy from ${book.UserName}</a>
-                                     </div >
-                                   </div >
-                                 </div >`;
+                                         </div >
+                                       </div >
+                                     </div >`;
                 }
 
                 // no one bought the book
                 else {
                     booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id}, "")'>Buy</a>
-                                     </div >
-                                   </div >
-                                 </div >`;
+                                         </div >
+                                       </div >
+                                     </div >`;
                 }
             });
 
@@ -362,13 +378,14 @@
 
         function checkForLoginUser() {
             var loginUser = JSON.parse(localStorage.getItem("loginUserDetails"))
-    
+
             if (loginUser != null) {
                 $('.userNameBox').show();
                 $('.logoutBox').show();
                 $('.loginBox').hide();
                 $('.userName').text(loginUser.userName);
                 $('.myBooks').show();
+                $('.requestBox').show();
             }
             else {
                 $('.userNameBox').hide();
@@ -376,9 +393,35 @@
                 $('.loginBox').show();
                 $('.userName').text("");
                 $('.myBooks').hide();
+                $('.requestBox').hide();
             }
         }
-   
+
+        //show user request
+        function showRequests() {
+            let userId = JSON.parse(localStorage.getItem("loginUserDetails")).userId
+
+            ajaxCall("GET", usersAPI + `/GetRequestsPerUser?userId=${userId}`,null, showMyRequests, showMyRequests)
+            }
+
+        function showMyRequests(listOfRequest) {
+            const requestBox = $('.requestBox .dropdown-menu');
+            requestBox.empty();
+
+            if (listOfRequest.length === 0) {
+                requestBox.append('<a class="dropdown-item" href="#">No requests</a>');
+            } else {
+                listOfRequest.forEach(request => {
+                    requestBox.append(`
+                    <a class="dropdown-item" href="#">
+                        <strong>Book:</strong> ${request.bookName} <br>
+                        <strong>Buyer:</strong> ${request.buyerName} <br>
+                        <strong>Status:</strong> ${request.status}
+                    </a>
+                `);
+                });
+            }
+        }
     </script>
 </body>
 </html>
