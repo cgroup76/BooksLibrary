@@ -33,7 +33,7 @@ public class DBservicesUsers
         return con;
     }
 
-   
+
     //--------------------------------------------------------------------------------------------------
     // This method adds a new user to the users table 
     //--------------------------------------------------------------------------------------------------
@@ -259,7 +259,7 @@ public class DBservicesUsers
         return cmd;
     }
 
-   
+
     //--------------------------------------------------------------------------------------------------
     // This method add New book To user
     //--------------------------------------------------------------------------------------------------
@@ -377,18 +377,18 @@ public class DBservicesUsers
                 book.SubTitle = Convert.ToString(dataReader["subTitle"]);
                 book.IsEbook = Convert.ToByte(dataReader["isEbook"]);
                 book.IsActive = Convert.ToByte(dataReader["isActive"]);
-                book.IsAvailable = Convert.ToByte(dataReader["isAvailable"]); 
-                book.Price = (float)Convert.ToDouble(dataReader["price"]); 
-                book.Category = Convert.ToString(dataReader["category"]); 
+                book.IsAvailable = Convert.ToByte(dataReader["isAvailable"]);
+                book.Price = (float)Convert.ToDouble(dataReader["price"]);
+                book.Category = Convert.ToString(dataReader["category"]);
                 book.SmallThumbnail = Convert.ToString(dataReader["smallThumbnail"]);
-                book.Thumbnail = Convert.ToString(dataReader["thumbnail"]); 
-                book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]); 
-                book.Description = Convert.ToString(dataReader["description"]); 
-                book.PreviewLink = Convert.ToString(dataReader["previewLink"]); 
-                book.PublishDate = Convert.ToString(dataReader["publishedDate"]); 
-                book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]); 
-                book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]); 
-                book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]); 
+                book.Thumbnail = Convert.ToString(dataReader["thumbnail"]);
+                book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]);
+                book.Description = Convert.ToString(dataReader["description"]);
+                book.PreviewLink = Convert.ToString(dataReader["previewLink"]);
+                book.PublishDate = Convert.ToString(dataReader["publishedDate"]);
+                book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]);
+                book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]);
+                book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]);
                 book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
                 book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
                 book.UserId = Convert.ToString(dataReader["userid"]);
@@ -443,7 +443,7 @@ public class DBservicesUsers
     //---------------------------------------------------------------------------------
 
 
-    public int readBookByUser(int bookId,int userId)
+    public int readBookByUser(int bookId, int userId)
     {
 
         SqlConnection con;
@@ -460,7 +460,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProcedurereadBookByUser("ReadBook", con,bookId, userId);             // create the command
+        cmd = CreateCommandWithStoredProcedurereadBookByUser("ReadBook", con, bookId, userId);             // create the command
 
         returnValue.ParameterName = "@RETURN_VALUE";
         returnValue.Direction = ParameterDirection.ReturnValue;
@@ -495,7 +495,7 @@ public class DBservicesUsers
     // Create the SqlCommand using a stored procedure to mark book as read by user
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProcedurereadBookByUser(String spName, SqlConnection con, int bookId,int userId)
+    private SqlCommand CreateCommandWithStoredProcedurereadBookByUser(String spName, SqlConnection con, int bookId, int userId)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -508,9 +508,9 @@ public class DBservicesUsers
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
 
-        cmd.Parameters.AddWithValue("@bookId",bookId);
+        cmd.Parameters.AddWithValue("@bookId", bookId);
 
-        cmd.Parameters.AddWithValue("@userId",userId);
+        cmd.Parameters.AddWithValue("@userId", userId);
 
         return cmd;
     }
@@ -520,7 +520,87 @@ public class DBservicesUsers
     // This method sale And Buy Book
     //--------------------------------------------------------------------------------------------------
 
-    public int saleAndBuyBook(int buyerId, int sellerId, int bookID)
+    //public int saleAndBuyBook(int buyerId, int sellerId, int bookID)
+    //{
+
+    //    SqlConnection con;
+    //    SqlCommand cmd;
+    //    SqlParameter returnValue = new SqlParameter();
+
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyerId, sellerId, bookID);             // create the command
+
+    //    returnValue.ParameterName = "@RETURN_VALUE";
+    //    returnValue.Direction = ParameterDirection.ReturnValue;
+    //    cmd.Parameters.Add(returnValue);
+
+    //    try
+    //    {
+    //        cmd.ExecuteNonQuery(); // execute the command
+
+    //        int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
+
+    //}
+
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure to sale and buy book
+    ////---------------------------------------------------------------------------------
+
+    //private SqlCommand CreateCommandWithStoredProceduresaleAndBuyBook(String spName, SqlConnection con, int buyerId, int sellerId, int bookID)
+    //{
+
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
+
+    //    cmd.Connection = con;              // assign the connection to the command object
+
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+    //    cmd.Parameters.AddWithValue("@buyyerId", buyerId);
+
+    //    cmd.Parameters.AddWithValue("@sellerId", sellerId);
+
+    //    cmd.Parameters.AddWithValue("@bookID", bookID);
+
+
+    //    return cmd;
+    //}
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method Insert new Request
+    //--------------------------------------------------------------------------------------------------
+
+    public int insertNewRequest(int sellerId, int buyerId, int bookID)
     {
 
         SqlConnection con;
@@ -537,7 +617,7 @@ public class DBservicesUsers
             throw (ex);
         }
 
-        cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyerId, sellerId, bookID);             // create the command
+        cmd = CreateCommandWithStoredProcedureInsertNewReqest("insertNewRequest", con, sellerId, buyerId, bookID);             // create the command
 
         returnValue.ParameterName = "@RETURN_VALUE";
         returnValue.Direction = ParameterDirection.ReturnValue;
@@ -569,10 +649,10 @@ public class DBservicesUsers
 
 
     //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure to sale and buy book
+    // Create the SqlCommand using a stored procedure to insert new request
     //---------------------------------------------------------------------------------
 
-    private SqlCommand CreateCommandWithStoredProceduresaleAndBuyBook(String spName, SqlConnection con, int buyerId, int sellerId, int bookID)
+    private SqlCommand CreateCommandWithStoredProcedureInsertNewReqest(String spName, SqlConnection con, int sellerId, int buyerId, int bookID)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -585,9 +665,9 @@ public class DBservicesUsers
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
 
-        cmd.Parameters.AddWithValue("@buyyerId", buyerId);
-
         cmd.Parameters.AddWithValue("@sellerId", sellerId);
+
+        cmd.Parameters.AddWithValue("@buyyerId", buyerId);
 
         cmd.Parameters.AddWithValue("@bookID", bookID);
 
@@ -595,5 +675,174 @@ public class DBservicesUsers
         return cmd;
     }
 
+
+    //--------------------------------------------------------------------------------------------------
+    // This method Insert new Request
+    //--------------------------------------------------------------------------------------------------
+
+    public int requestHandling(int sellerId, int buyerId, int bookID, string requestStatus)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlParameter returnValue = new SqlParameter();
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProcedurerequestHandling("requestHandling", con, sellerId, buyerId, bookID, requestStatus);             // create the command
+
+        returnValue.ParameterName = "@RETURN_VALUE";
+        returnValue.Direction = ParameterDirection.ReturnValue;
+        cmd.Parameters.Add(returnValue);
+
+        try
+        {
+            cmd.ExecuteNonQuery(); // execute the command
+
+            int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to handling request
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProcedurerequestHandling(String spName, SqlConnection con, int sellerId, int buyerId, int bookID, string requstStatus)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+        cmd.Parameters.AddWithValue("@sellerId", sellerId);
+
+        cmd.Parameters.AddWithValue("@buyyerId", buyerId);
+
+        cmd.Parameters.AddWithValue("@bookID", bookID);
+
+        cmd.Parameters.AddWithValue("@requestStatus", requstStatus);
+
+
+        return cmd;
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method reads all the requests for a user
+    //--------------------------------------------------------------------------------------------------
+
+    public List<dynamic> getRequestsPerUser(int userId)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd = null;
+        List<dynamic> userRequests = new List<dynamic>();
+
+        try
+        {
+            con = connect("myProjDB"); // Create the connection
+
+            // Create the command using the stored procedure
+            cmd = CreateCommandWithStoredProceduregetRequestsPerUser("getRequestsPerUser", con, userId);
+
+            // Add the return value parameter
+            SqlParameter returnValue = new SqlParameter
+            {
+                ParameterName = "@RETURN_VALUE",
+                Direction = ParameterDirection.ReturnValue
+            };
+            cmd.Parameters.Add(returnValue);
+
+            // Execute the command and read the data
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            // Read the data from the data reader
+            while (dataReader.Read())
+            {
+                dynamic request = new ExpandoObject();
+                request.userId = Convert.ToInt32(dataReader["sellerId"]);
+                request.buyerId = Convert.ToInt32(dataReader["buyyerId"]);
+                request.bookId = Convert.ToInt32(dataReader["bookId"]);
+                request.buyerName = Convert.ToString(dataReader["userName"]);
+                request.bookName = Convert.ToString(dataReader["title"]);
+                request.status = Convert.ToString(dataReader["requestStatus"]);
+                userRequests.Add(request);
+            }
+
+            dataReader.Close(); // Ensure the data reader is closed
+
+            // Check the return value
+            int status = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+            if (status == -1)
+            {
+                // Handle the case where the status is -1
+                dynamic request = new ExpandoObject();
+                request.status = status;
+                userRequests.Add(request);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // Close the database connection
+                con.Close();
+            }
+        }
+
+        return userRequests;
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to get all requests per user
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProceduregetRequestsPerUser(String spName, SqlConnection con, int userId)
+    {
+        SqlCommand cmd = new SqlCommand(); // Create the command object
+
+        cmd.Connection = con;              // Assign the connection to the command object
+        cmd.CommandText = spName;          // Can be Select, Insert, Update, Delete 
+        cmd.CommandTimeout = 10;           // Time to wait for the execution; the default is 30 seconds
+        cmd.CommandType = CommandType.StoredProcedure; // The type of the command
+
+        cmd.Parameters.AddWithValue("@userId", userId);
+
+        return cmd;
+    }
 
 }

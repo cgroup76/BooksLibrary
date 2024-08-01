@@ -26,7 +26,7 @@ namespace serverSide.Controllers
             }
             return Ok(books);
         }
-        // GET api/AuthorsController>/5
+        // GET 
         [HttpGet("{id}")]
         public string Get(int id)
         {

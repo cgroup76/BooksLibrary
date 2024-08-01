@@ -5,7 +5,7 @@ namespace serverSide.BL
 {
     public class IUser
     {
-        public static readonly int TIMEOUT = 1; // SET A GLOBAL VALUE FOR THE SESSION TIMEOUT -> CAN BE CHANGED AND MODIFY SO WE SAVE IN THE CODE
+        public static readonly int TIMEOUT = 20; // SET A GLOBAL VALUE FOR THE SESSION TIMEOUT -> CAN BE CHANGED AND MODIFY SO WE SAVE IN THE CODE
 
         int id;
         string userName = string.Empty;
@@ -22,7 +22,7 @@ namespace serverSide.BL
             this.userName = userName;
             this.eMail = eMail;
             this.password = password;
-            
+
         }
         public int Id { get => id; set => id = value; }
         public string UserName { get => userName; set => userName = value; }
@@ -33,8 +33,8 @@ namespace serverSide.BL
         public bool IsLogIn { get => isLogIn; set => isLogIn = value; }
 
 
-       // static public List<IUser> ReadUsers() { return usersList; }
-        
+        // static public List<IUser> ReadUsers() { return usersList; }
+
 
 
         // add new user
@@ -44,7 +44,7 @@ namespace serverSide.BL
 
             int newUserId = dBservicesUsers.AddNewUser(newUser, TIMEOUT);
 
-            if ( newUserId != 0) return newUserId; // success to add user
+            if (newUserId != 0) return newUserId; // success to add user
 
             else return 0;
         }
@@ -56,7 +56,7 @@ namespace serverSide.BL
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
-            return dBservicesUsers.addNewbookToUser(userId,bookId);
+            return dBservicesUsers.addNewbookToUser(userId, bookId);
 
         }
 
@@ -90,17 +90,36 @@ namespace serverSide.BL
         {
             DBservicesUsers dbservicesUsers = new DBservicesUsers();
 
-            return dbservicesUsers.readBookByUser(bookId,userId);
+            return dbservicesUsers.readBookByUser(bookId, userId);
 
         }
-        // Add sale and buy book method
-        public static bool saleAndBuyBook(int buyerId,int sellerId, int bookId)
+        //// Add sale and buy book method
+        //public static bool saleAndBuyBook(int buyerId,int sellerId, int bookId)
+        //{
+        //    DBservicesUsers dBservicesUsers = new DBservicesUsers();
+
+        //    return 1 == dBservicesUsers.saleAndBuyBook(buyerId, sellerId, bookId);
+
+
+        //}
+        public static bool insertNewRequest(int sellerId, int buyerId, int bookId)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
-            return 1 == dBservicesUsers.saleAndBuyBook(buyerId, sellerId, bookId);
-          
+            return 1 == dBservicesUsers.insertNewRequest(sellerId, buyerId, bookId);
+        }
+        public static bool requestHandling(int sellerId, int buyerId, int bookId, string requestStatus)
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
+            return 1 == dBservicesUsers.requestHandling(sellerId, buyerId, bookId, requestStatus);
+        }
+
+        public static List<dynamic> getRequestsPerUser(int userId)
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
+
+            return dBservicesUsers.getRequestsPerUser(userId);
         }
 
     }

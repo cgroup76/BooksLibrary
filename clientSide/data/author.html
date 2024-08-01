@@ -66,6 +66,7 @@
             showAuthors();
 
             $('.logout').click(logoutUser);
+
         });
 
         function showAuthors() {
@@ -84,10 +85,11 @@
             const authorsContainer = document.getElementById('authors-books');
             let authorsHtml = '';
 
-            allAuthors = authors
+            allAuthors = authors;
+
             allAuthors.forEach((author) => {
                 authorsHtml += `
-                    <div class='col-md-4 mb-4'>
+                    <div class='col-md-4 mb-4 author' onclick='showAthourDetails(${author.id})' id='${author.id}'>
                         <div class='card'>
                             <div class='card-body'>
                                 <p class='card-text'>${author.name}</p>
@@ -149,6 +151,23 @@
         function errorLogout(errorMessage) {
             console.log(errorMessage);
             Swal.fire('Error', 'Failed to logout. Please try again.', 'error');
+        }
+
+        function showAthourDetails(authorId) {
+
+            var authorDiv = document.getElementById(authorId);
+            var author = allAuthors.find(authorId)
+
+            authorDiv.innerHTML = `
+                        <div class='card'>
+                            <div class='card-body'>
+                                <h4 class='card-text'>${author.name}</h4>
+                                <p class='card-text'>${author.da}</p>
+                                <p class='card-text'>${author.name}</p>
+                                <p class='card-text'>${author.name}</p>
+                                <p class='card-text'>${author.name}</p>
+                            </div>
+                        </div>`;
         }
     </script>
 </body>

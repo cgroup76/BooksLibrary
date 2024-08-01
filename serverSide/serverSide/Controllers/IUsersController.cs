@@ -15,7 +15,13 @@ namespace serverSide.Controllers
         public List<dynamic> Get(int userId)
         {
             return IUser.showMyBooks(userId);
- 
+
+        }
+        // GET: api/<IUsersController>
+        [HttpGet("GetRequestsPerUser")]
+        public List<dynamic> GetRequestsPerUser(int userId)
+        {
+            return IUser.getRequestsPerUser(userId);
         }
 
         // POST sign up new user
@@ -37,13 +43,13 @@ namespace serverSide.Controllers
         }
         // POST api/<IUsersController>
         [HttpPost("addNewBookToUser")]
-        public IActionResult Post( int userId, int bookId)
+        public IActionResult Post(int userId, int bookId)
         {
             int status = IUser.addNewBook(userId, bookId);
 
             if (status == 1) { return Ok(true); }
 
-            else if(status == 0) { return NotFound(false); }
+            else if (status == 0) { return NotFound(false); }
 
             return Unauthorized("user session has ended");
         }
@@ -69,7 +75,7 @@ namespace serverSide.Controllers
         [HttpPut("readBookByUser")]
         public IActionResult Put(int bookId, int userId)
         {
-            int status =  IUser.readBook(bookId, userId);
+            int status = IUser.readBook(bookId, userId);
 
             if (status == 1) { return Ok(true); }
 
@@ -77,16 +83,35 @@ namespace serverSide.Controllers
 
             return Unauthorized("user session has ended");
         }
-        // PUT sale and buy books
-        [HttpPut("saleAndBuyBook")]
-        public bool Put(int buyerId, int sellerId, int bookId)
-        {
-            return IUser.saleAndBuyBook(buyerId, sellerId, bookId);
-        }
+        //// PUT sale and buy books
+        //[HttpPut("saleAndBuyBook")]
+        //public bool Put(int buyerId, int sellerId, int bookId)
+        //{
+        //    return IUser.saleAndBuyBook(buyerId, sellerId, bookId);
+        //}
         // DELETE api/<IUsersController>/5
+
+        // POST insert new request
+        [HttpPost("insertNewRequest")]
+        public bool POST(int sellerId, int buyerId, int bookId)
+        {
+            return IUser.insertNewRequest(sellerId, buyerId, bookId);
+        }
+
         [HttpDelete("{id}")]
         public void Delete(int id)
+
         {
         }
+
+        // PUT sale and buy books
+        [HttpPut("requestHandling")]
+        public bool Put(int buyerId, int sellerId, int bookId, string requeststatus)
+        {
+            return IUser.requestHandling(buyerId, sellerId, bookId, requeststatus);
+        }
+
+
+
     }
 }

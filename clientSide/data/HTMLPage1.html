@@ -101,7 +101,7 @@
         <div id="loader"></div>
     </div>
     <!---------------->
-
+    <script src="data.js"></script>
     
     <script>
         var usersAPI = "https://localhost:7225/api/IUsers";
@@ -284,13 +284,14 @@
             }
             else { BooksToShow(allBooks); }
         }
-
+     
         function BooksToShow(books) {
             
             const BooksContainer = document.getElementById('topBooks');
             let booksHtml = '';
 
             books.forEach((book) => {
+               
                 booksHtml += `
             <div class='col-md-4'>
                 <div class='card mb-4 book-card'>
@@ -377,6 +378,7 @@
                 $('.myBooks').hide();
             }
         }
+   
     </script>
 </body>
 </html>

@@ -212,6 +212,28 @@ public class DBservicesAuthor
                 author.Id = Convert.ToInt32(dataReader["id"]);
                 author.Name = Convert.ToString(dataReader["authorName"]);
 
+                if (dataReader["dateOfBirth"] == null) { author.DateOfBirth = ""; }
+                else { author.DateOfBirth = (Convert.ToString(dataReader["dateOfBirth"])).Split(' ')[0]; }
+
+                if (dataReader["dateOfDeath"] == null) { author.DateOfDeath = ""; }
+                else { author.DateOfDeath = (Convert.ToString(dataReader["dateOfDeath"])).Split(' ')[0]; }
+
+                string age = Convert.ToString(dataReader["age"]);
+
+                if (age == "") { author.Age = 0; }
+                else { author.Age = Convert.ToInt32(age); }
+
+                if (dataReader["nationality"] == null) { author.Nationality = ""; }
+                else { author.Nationality = Convert.ToString(dataReader["nationality"]); }
+
+                if (dataReader["notableWork"] == null) { author.NotableWork = ""; }
+                else { author.NotableWork = Convert.ToString(dataReader["notableWork"]); }
+
+                if (dataReader["awards"] == null) { author.Awars = ""; }
+                else { author.Awars = Convert.ToString(dataReader["awards"]); }
+
+                author.Description = Convert.ToString(dataReader["description"]);
+
                 authors.Add(author);
 
             }
