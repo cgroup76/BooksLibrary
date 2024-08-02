@@ -48,7 +48,18 @@
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
             <div class="row" id="myBooks">
-
+                <button id="markAsRead"  class="btn btn-primary btn-block mb-3" onclick="markAsRead(1)">mark As Read</button>
+                <div id="rating-1" style="display:none;">
+                    Rating:
+                    <select id="ratingSelect-1" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button class="btn btn-success btn-block" onclick="rateBook(1)">Rate</button>
+                </div>
             </div>
         </div>
     </section>
@@ -96,6 +107,21 @@
             });
         }
 
+        function rateBook(bookId) {
+            let rating = document.getElementById(`ratingSelect-${bookId}`).value;
+            let rateBookData = {
+                bookId: bookId,
+                rating: rating
+            };
+
+            ajaxCall("PUT", `${booksAPI}/RateBook`, JSON.stringify(rateBookData), successRating, errorRating);
+        }
+        function errorRating(err) {
+            console.log(err);
+        }
+        function successRating() {
+
+        }
         function logoutUser() {
             let user = JSON.parse(localStorage.getItem("loginUserDetails"));
             if (user) {
@@ -138,9 +164,22 @@
                         <div class='card-body'>
                             <h5 class='card-title'>${book.Title}</h5>`
                 if (book.IsRead == 'False') {
-                    booksHtml += `<a class='btn btn-primary' onclick='ReadTheBook(${book.UserId}, ${book.Id})'>Mark as read</a>`
-                } else {
-                    booksHtml += `<a class='btn btn-primary'>Already read this book</a>`
+                    booksHtml += `<a class='btn btn-primary' id='markAsRead' onclick='ReadTheBook(${book.UserId}, ${book.Id})'>Mark as read</a>`
+                    booksHtml += document.addE
+                }
+                else {
+                    booksHtml += `<a class='btn btn-primary'>Already read this book</a>
+                <div id='rating-${book.Id}' style='display:block;'>
+                    Rating:
+                    <select id='ratingSelect-${book.Id}'>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                    </select>
+                    <button onclick='rateBook(${book.Id})'>Rate</button>
+                </div>`;
                 }
                 booksHtml += `
                         </div>
@@ -158,11 +197,12 @@
 
         function ReadTheBook(userId, bookId) {
 
-            ajaxCall("PUT", `${usersAPI}/readBookByUser?bookId=${bookId}&userId=${userId}`, null, successToMarkAsRead, errorToMarkAsRead);
+            ajaxCall("PUT", `${usersAPI}/readBookByUser?bookId=${bookId}&userId=${userId}`, null, successToMarkAsRead(bookId), errorToMarkAsRead);
         }
 
-        function successToMarkAsRead() {
+        function successToMarkAsRead(bookId) {
             Swal.fire('Success', 'Book marked as read.', 'success');
+            document.getElementById(`rating-${bookId}`).style.display = 'block'; //open the option to rate the book 
             showMyBooks(); // Refresh the books list
         }
 

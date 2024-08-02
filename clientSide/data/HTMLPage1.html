@@ -46,16 +46,31 @@
             <a href="#" class="btn btn-primary btn-lg">Learn More</a>
         </div>
     </section>
+    <!-- top 5 courses by rating  -->
+    <section class="books py-5">
+        <div class="container">
+            <h2 class="text-center text-white mb-5">Top 5 rating Books</h2>
+            <div class="row" id="top5Books">
 
+            </div>
+        </div>
+    </section>
     <section class="books py-5">
         <div class="container">
             <h2 class="text-center text-white mb-5">Recommended Books</h2>
             <div class="row" id="topBooks">
-          
+
             </div>
         </div>
     </section>
-
+    <!-- quizz -->
+    <div class="container">
+        <div class="quiz-container" id="quiz">
+            <h2 class="text-center">Book Quiz</h2>
+            <div id="question-container"></div>
+            <button class="btn btn-primary btn-block mt-3" id="submit-quiz">Submit Quiz</button>
+        </div>
+    </div>
     <footer class="bg-dark text-white py-3">
         <div class="container text-center">
             <p>All rights reserved © 2024 Book Store</p>
@@ -90,7 +105,7 @@
 
                 <input type="submit" value="Log in" class="btn" id="logInButton" />
                 <input type="submit" value="Sign Up" class="btn" id="signupButton" />
-                
+
                 <div class="signupQuestion"><span>Not registered yet?  </span><a class="signup">signup</a></div>
                 <div class="loginQuestion"><span>Already registered?  </span><a class="login">login</a></div>
             </form>
@@ -102,7 +117,7 @@
     </div>
     <!---------------->
 
-    
+
     <script>
         var usersAPI = "https://localhost:7225/api/IUsers";
         var booksAPI = "https://localhost:7225/api/Books";
@@ -126,10 +141,12 @@
             $('#logInButton').click(loginUser);
             $('#signupButton').click(signupNewUser);
 
-           // logout user
+            // logout user
             $('.logout').click(logoutUser);
 
         })
+
+
 
         // login or signup form
 
@@ -220,7 +237,7 @@
         function logoutUser() {
 
             let userIdToLogout = JSON.parse(localStorage.getItem("loginUserDetails")).userId
-         
+
             ajaxCall("PUT", usersAPI + "/logoutUser", JSON.stringify(userIdToLogout), successLogout, errorLogout)
         }
 
@@ -281,38 +298,71 @@
 
             if (allBooks.length == 0) {
                 ajaxCall("GET", booksAPI, null, BooksToShow, errorToLoadBooks);
-            }
-            else { BooksToShow(allBooks); }
-        }
+                ajaxCall("GET", booksAPI + '/showTop5BooksByRating', null, top5booksByRating, errorToLoadBooks);
 
+            }
+            else { BooksToShow(allBooks); top5booksByRating(books); }
+        }
+        function top5booksByRating(books) {
+            const BooksTop5RatingBooksContainer = document.getElementById('top5Books');
+            let booksRatingHtml = '';
+            books.forEach((book) => {
+                booksRatingHtml += `
+                    <div class='col-md-4'>
+                        <div class='card mb-4 book-card'>
+                            <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${book.Title}</h5>
+                                <p class='card-text'>${book.Price}$</p>`;
+                // if someone already bought the book
+                if (book.IsAvailable == 0) {
+                    booksRatingHtml += `<a class='btn btn-primary' onclick='buyABook(${book.UserId},${book.Id})'>Buy from ${book.UserName}</a>
+                                             </div >
+                                           </div >
+                                         </div >`;
+                }
+
+                // no one bought the book
+                else {
+                    booksRatingHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id}, "")'>Buy</a>
+                                             </div >
+                                           </div >
+                                         </div >`;
+                }
+            });
+
+            BooksTop5RatingBooksContainer.innerHTML = booksRatingHtml;
+
+
+        }
         function BooksToShow(books) {
-            
+
             const BooksContainer = document.getElementById('topBooks');
             let booksHtml = '';
 
             books.forEach((book) => {
                 booksHtml += `
-            <div class='col-md-4'>
-                <div class='card mb-4 book-card'>
-                    <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
-                    <div class='card-body'>
-                        <h5 class='card-title'>${book.Title}</h5>
-                        <p class='card-text'>${book.Price}$</p>`;
+                    <div class='col-md-4'>
+                        <div class='card mb-4 book-card'>
+                            <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                            <div class='card-body'>
+                                <h5 class='card-title'>${book.Title}</h5>
+                                <p class='card-text'>${book.Price}$</p>`;
 
                 // if someone already bought the book
                 if (book.IsAvailable == 0) {
                     booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.UserId},${book.Id})'>Buy from ${book.UserName}</a>
-                                     </div >
-                                   </div >
-                                 </div >`;
+                                             </div >
+                                           </div >
+                                         </div >`;
                 }
 
                 // no one bought the book
                 else {
                     booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id}, "")'>Buy</a>
-                                     </div >
-                                   </div >
-                                 </div >`;
+                                             </div >
+                                           </div >
+                                         </div >`;
                 }
             });
 
@@ -361,7 +411,7 @@
 
         function checkForLoginUser() {
             var loginUser = JSON.parse(localStorage.getItem("loginUserDetails"))
-    
+
             if (loginUser != null) {
                 $('.userNameBox').show();
                 $('.logoutBox').show();

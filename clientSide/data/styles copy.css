@@ -8,7 +8,7 @@
 }
 
 .hero {
-    background: url('https://via.placeholder.com/1500x500') no-repeat center center/cover;
+    background: url('https://via.placeholder.com/1500x500') no-repeat center center;
     color: #fff;
     padding: 100px 0;
 }

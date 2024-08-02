@@ -240,5 +240,181 @@ public class DBservicesBooks
         return cmd;
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method show top 5 books by rating 
+    //--------------------------------------------------------------------------------------------------
+
+    public List<object> getTop5BooksByRating()
+
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProceduregetTop5BooksByRating("GetTop5Books", con);             // create the command
+
+
+        List<dynamic> Books = new List<dynamic>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                dynamic book = new ExpandoObject();
+                book.Id = Convert.ToInt32(dataReader["id"]);
+                book.Title = Convert.ToString(dataReader["title"]);
+                book.SubTitle = Convert.ToString(dataReader["subTitle"]);
+                book.IsEbook = Convert.ToByte(dataReader["isEbook"]);
+                book.IsActive = Convert.ToByte(dataReader["isActive"]);
+                book.IsAvailable = Convert.ToByte(dataReader["isAvailable"]);
+                book.Price = (float)Convert.ToDouble(dataReader["price"]);
+                book.Category = Convert.ToString(dataReader["category"]);
+                book.SmallThumbnail = Convert.ToString(dataReader["smallThumbnail"]);
+                book.Thumbnail = Convert.ToString(dataReader["thumbnail"]);
+                book.NumOfPages = Convert.ToInt32(dataReader["numOfPages"]);
+                book.Description = Convert.ToString(dataReader["description"]);
+                book.PreviewLink = Convert.ToString(dataReader["previewLink"]);
+                book.PublishDate = Convert.ToString(dataReader["publishedDate"]);
+                book.FirstAuthorName = Convert.ToString(dataReader["firstAuthor"]);
+                book.SecondAuthorName = Convert.ToString(dataReader["secondAuthor"]);
+                book.NumOfReviews = Convert.ToInt32(dataReader["numOfReviews"]);
+                book.Rating = (float)Convert.ToDouble(dataReader["rating"]);
+                book.TextSnippet = Convert.ToString(dataReader["textSnippet"]);
+
+                Books.Add(book);
+            }
+            return Books;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure to get books 
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProceduregetTop5BooksByRating(String spName, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+
+        return cmd;
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method let the user rate books
+    //--------------------------------------------------------------------------------------------------
+
+    public int RateBook(int bookID, int newRating ,int userID)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlParameter returnValue = new SqlParameter();
+
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithStoredProcedureNewRating("RateBook", con, bookID, newRating, userID );             // create the command
+        returnValue.ParameterName = "@RETURN_VALUE";
+        returnValue.Direction = ParameterDirection.ReturnValue;
+        cmd.Parameters.Add(returnValue);
+        try
+        {
+            cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value;
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+         
+    }
+
+
+    //---------------------------------------------------------------------------------
+    //  This method let the user rate books
+    //---------------------------------------------------------------------------------
+
+    private SqlCommand CreateCommandWithStoredProcedureNewRating(String spName, SqlConnection con,  int bookId, int newRating,int userId)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
+
+
+        cmd.Parameters.AddWithValue("@bookid", bookId);
+        cmd.Parameters.AddWithValue("@newRating", newRating);
+        cmd.Parameters.AddWithValue("@userid", userId);
+
+
+
+
+        return cmd;
+    }
 }
+
+
 

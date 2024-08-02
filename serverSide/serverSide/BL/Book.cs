@@ -77,12 +77,26 @@
             return 1 == dBserviecesBooks.AddNewBook(book);
         }
         //show all Books
-        public static List<object> showBooks(){
+        public static List<object> showBooks()
+        {
             DBservicesBooks dBserviecesBooks = new DBservicesBooks();
 
             return dBserviecesBooks.getAllBooks();
         }
-    }
+        public static List<object> showTop5BooksByrating()
+        {
+            DBservicesBooks dBserviecesBooks = new DBservicesBooks();
 
+            return dBserviecesBooks.getTop5BooksByRating();
+        }
+        public static bool RateBook(int bookID, int newRating, int userID)
+        {
+            DBservicesBooks dBserviecesBooks = new DBservicesBooks();
+
+            return 1 == dBserviecesBooks.RateBook(bookID, newRating, userID);
+
+        }
+
+    }
 }
 
