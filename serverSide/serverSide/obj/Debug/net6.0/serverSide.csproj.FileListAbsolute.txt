@@ -31,7 +31,6 @@ C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמס�
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.serverSide.props
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\staticwebassets.pack.json
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\scopedcss\bundle\serverSide.styles.css
-C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.csproj.Up2Date
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.dll
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\refint\serverSide.dll
 C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.pdb
@@ -75,3 +74,4 @@ C:\Users\user\OneDrive\Desktop\BooksLibrary\serverSide\serverSide\obj\Debug\net6
 C:\Users\user\OneDrive\Desktop\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.pdb
 C:\Users\user\OneDrive\Desktop\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.genruntimeconfig.cache
 C:\Users\user\OneDrive\Desktop\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\ref\serverSide.dll
+C:\Users\adida\OneDrive\שולחן העבודה\לימודים\שנה ב\סמסטר ב\צד שרת\BooksLibrary\serverSide\serverSide\obj\Debug\net6.0\serverSide.csproj.CopyComplete

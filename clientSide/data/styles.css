@@ -132,3 +132,61 @@ li {
 .card-img-top{
     height: 250px
 }
+
+/*request pop up */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+    .popup-content h2 {
+        margin-top: 0;
+    }
+
+    .popup-content p {
+        margin-bottom: 20px;
+    }
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Ensure the dropdown is wide enough and contents are aligned */
+.dropdown-menu {
+    width: 300px; /* Adjust the width as needed */
+    max-height: 400px; /* Set a max height if needed for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling if content is too long */
+    white-space: normal; /* Allow line breaks for text content */
+}
+
+.dropdown-item {
+    padding: 10px;
+    word-wrap: break-word; /* Ensure long text wraps properly */
+}
+
+    .dropdown-item button {
+        margin-top: 5px; /* Add some space above buttons */
+    }
