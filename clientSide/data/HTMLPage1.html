@@ -227,6 +227,8 @@
 
             checkForLoginUser();
 
+            showBooks();
+
             closeLoginForm();
         }
 
@@ -303,48 +305,55 @@
         }
 
         function BooksToShow(books) {
-            var buyer = JSON.parse(localStorage.getItem("loginUserDetails"));
-
             const BooksContainer = document.getElementById('topBooks');
             let booksHtml = '';
+            const buyer = JSON.parse(localStorage.getItem("loginUserDetails"));
 
             books.forEach((book) => {
                 booksHtml += `
-                <div class='col-md-4'>
-                    <div class='card mb-4 book-card'>
-                        <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
-                        <div class='card-body'>
-                            <h5 class='card-title'>${book.Title}</h5>
-                            <p class='card-text'>${book.Price}$</p>`;
+            <div class='col-md-4'>
+                <div class='card mb-4 book-card'>
+                    <img src='${book.SmallThumbnail}' class='card-img-top' alt='Book'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>${book.Title}</h5>
+                        <p class='card-text'>${book.Price}$</p>`;
 
-                // if someone already bought the book
-                if (book.IsAvailable == 0) {
-                  if (book.userId == buyer.id)
-                    {
-                        booksHtml += `<a class='btn btn-primary'>You already bought this book</a>
-                              </div >
-                             </div >
-                             </div >`
-                    }
-                   else {
-                        booksHtml += `<a class='btn btn-primary' onclick='sendRequest(${book.UserId},${book.Id})'>Buy</a>
-                                         </div >
-                                       </div >
-                                     </div >`;
-                    }
-                }
+                if (buyer != null) {
+                    const buyerId = buyer.userId;
 
-                // no one bought the book
-                else {
-                    booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id}, "")'>Buy</a>
-                                         </div >
-                                       </div >
-                                     </div >`;
+                    // If someone already bought the book
+                    if (book.IsAvailable == 0) {
+                        if (book.UserId == buyerId) { // The logged-in user bought this book
+                            booksHtml += `<a class='btn btn-primary'>You already bought this book</a>
+                                  </div>
+                                  </div>
+                                  </div>`;
+                        } else {
+                            const userName = book.UserName ? book.UserName.toString() : ''; // Ensure userName exists and convert it to a string
+                            booksHtml += `<a class='btn btn-primary' onclick='sendRequest(${buyerId}, ${book.UserId}, ${book.Id}, "${userName}")'>Buy</a>
+                                  </div>
+                                  </div>
+                                  </div>`;
+                        }
+                    } else {
+                        // If the book is available for purchase
+                        booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id})'>Buy</a>
+                              </div>
+                              </div>
+                              </div>`;
+                    }
+                } else {
+                    // If the user is not logged in, there's no need to show the purchase option
+                    booksHtml += `<a class='btn btn-primary' onclick='buyABook(${book.Id})'>Buy</a>
+                          </div>
+                          </div>
+                          </div>`;
                 }
             });
 
             BooksContainer.innerHTML = booksHtml;
         }
+
 
         function errorToLoadBooks(message) { console.log(message); }
 
@@ -358,15 +367,16 @@
 
                 buyer = buyer.userId; // set the buyer id from the json
 
-                ajaxCall("POST", usersAPI + '/addNewBookToUser?userId=' + buyer + '&bookId=' + bookId + '', null, successToBuyABook, errorBuyABook);
+                ajaxCall("POST", usersAPI + '/addNewBookToUser?userId=' + buyer + '&bookId=' + bookId, null, successToBuyABook, errorBuyABook);
             }
 
             else { Swal.fire("Please login first"); }
         }
 
         function successToBuyABook(status) {
-
+            Swal.fire("The book has been successfully purchased");
             console.log(status);
+            showBooks();
         }
         function errorBuyABook(error) {
             if (error.status == 401) {
@@ -380,42 +390,56 @@
             else { Swal.fire("Error to buy a book"); }
         }
 
-        //send request 
-        function sendRequest(buyerId, sellerId, bookId) {
-            // Create the popup HTML
-            const popupHtml = `
-                <div id="requestPopup" class="popup-overlay">
-                    <div class="popup-content">
-                    <button class="close-popup">&times;</button>
-                     <h2>The book is already bought</h2>
-                    <p>Would you like to send a request to buy it from the current owner?</p>
-                    <button class="btn btn-primary" id="sendRequestBtn">Send Request</button>
-             </div>
-             </div>  `;
+        //send request
+        function sendRequest(buyerId,sellerId,bookId,sellerName) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+                title: `The book already belong to ${sellerName}`,
+                text: "Do you want to send him a request to purchase the book from him?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ajaxCall("POST", usersAPI + "/insertNewRequest?sellerId=" + sellerId + "&buyerId=" + buyerId + "&bookId=" + bookId, null, successToSendRequest, errorToSendRequest);
 
-            // Append the popup to the body
-            $('body').append(popupHtml);
-
-            // Show the popup
-            $('#requestPopup').fadeIn();
-
-            // Close the popup when the close button is clicked
-            $('.close-popup').click(function () {
-                $('#requestPopup').fadeOut(function () {
-                    $(this).remove();
-                });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+        function successToSendRequest() {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "The request has been sent",
+                showConfirmButton: false,
+                timer: 1500
             });
 
-            // Handle the send request button click
-            $('#sendRequestBtn').click(function () {
-                // Perform the AJAX call to send the request (you can implement this later)
-                console.log('Request to buy the book sent');
+        }
+        function errorToSendRequest() {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "There was a problem sending the request, please try again",
 
-                // Close the popup
-                $('#requestPopup').fadeOut(function () {
-                    $(this).remove();
-                });
             });
+
         }
 
         function checkForLoginUser() {
@@ -443,42 +467,59 @@
         function showRequests() {
             let userId = JSON.parse(localStorage.getItem("loginUserDetails")).userId
 
-            ajaxCall("GET", usersAPI + `/GetRequestsPerUser?userId=${userId}`,null, showMyRequests, showMyRequests)
-            }
+            ajaxCall("GET", usersAPI + `/GetRequestsPerUser?userId=${userId}`, null, showMyRequests, showMyRequests)
+        }
 
         function showMyRequests(listOfRequest) {
             const requestBox = $('.requestBox .dropdown-menu');
             requestBox.empty();
+            let approved = "approved";
+            let denied = "denied";
 
             if (listOfRequest.length === 0) {
                 requestBox.append('<a class="dropdown-item" href="#">No requests</a>');
             } else {
+                let sellerId = JSON.parse(localStorage.getItem("loginUserDetails")).userId
                 listOfRequest.forEach(request => {
                     requestBox.append(`<div class="dropdown-item">
-                                        <strong>Book:</strong> ${request.bookName} <br>
-                                        <strong>Want to buy:</strong> ${request.buyerName} <br>
-                                        <strong>Status:</strong> ${request.status} <br>
-                                        <button class="btn btn-success" onclick="handleRequest('${request.buyerId}','${request.sellerId}','${request.bookId}', 'approved')">Approve</button>
-                                        <button class="btn btn-danger" onclick="handleRequest('${request.buyerId}','${request.sellerId}','${request.bookId}', 'denied')">Reject</button>
-                                    </div>`);
+                                            <strong>Book:</strong> ${request.bookName} <br>
+                                            <strong>Want to buy:</strong> ${request.buyerName} <br>
+                                            <strong>Status:</strong> ${request.status} <br>
+                                            <button class="btn btn-success" onclick="handleRequest('${request.buyerId}','${sellerId}','${request.bookId}','${approved}')">Approve</button>
+                                            <button class="btn btn-danger" onclick="handleRequest('${request.buyerId}','${sellerId}','${request.bookId}','${denied}')">Reject</button>
+                                        </div>`);
                 });
             }
         }
-        function handleRequest(buyerId,sellerId,bookId,requeststatus) {
-
-            ajaxCall("PUT", usersAPI + `/requestHandling?buyerId=${buyerId}&sellerId=${sellerId}&bookId=${bookId}&requeststatus=${requeststatus}`, null, successToHandle, errorToHandle)
-
+        //approve or denied request
+        function handleRequest(buyerId, sellerId, bookId, requestStatus) {
+            console.log(buyerId, sellerId, bookId, requestStatus);
+            ajaxCall("PUT", `${usersAPI}/requestHandling?sellerId=${sellerId}&buyerId=${buyerId}&bookId=${bookId}&requeststatus=${requestStatus}`, null, successToHandle(requestStatus), errorToHandle)
         }
-        function successToHandle() {
-            Swal.fire({
-                title: "the request approved"
-            });
+
+        function successToHandle(requestStatus) {
+            if (requestStatus == 'approved')
+                Swal.fire({
+                    title: "The request was successfully approved"
+                });
+            else {
+                Swal.fire({
+                    title: "The request was successfully rejected"
+                });
+
+            }
             showRequests();
         }
-           
         function errorToHandle() {
-            console.error('Error handling request')
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'There was an error handling the request. Please try again.'
+            });
         }
     </script>
+
+  
 </body>
 </html>

@@ -108,11 +108,11 @@ namespace serverSide.BL
 
             return 1 == dBservicesUsers.insertNewRequest(sellerId, buyerId, bookId);
         }
-        public static bool requestHandling(int sellerId, int buyerId, int bookId, string requestStatus)
+        public static int requestHandling(int sellerId, int buyerId, int bookId, string requestStatus)
         {
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
-            return 1 == dBservicesUsers.requestHandling(sellerId, buyerId, bookId, requestStatus);
+            return  dBservicesUsers.requestHandling(sellerId, buyerId, bookId, requestStatus);
         }
 
         public static List<dynamic> getRequestsPerUser(int userId)

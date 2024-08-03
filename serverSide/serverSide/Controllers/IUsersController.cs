@@ -106,9 +106,16 @@ namespace serverSide.Controllers
 
         // PUT sale and buy books
         [HttpPut("requestHandling")]
-        public bool Put(int buyerId, int sellerId, int bookId, string requeststatus)
+        public IActionResult Put( int sellerId, int buyerId, int bookId, string requeststatus)
         {
-            return IUser.requestHandling(buyerId, sellerId, bookId, requeststatus);
+            int status = IUser.requestHandling(sellerId, buyerId, bookId, requeststatus);
+
+            if (status == 1) { return Ok(true); }
+
+            else if (status == 0) { return NotFound(false); }
+
+            return Unauthorized("user session has ended");
+           
         }
 
 
