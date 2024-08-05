@@ -17,11 +17,17 @@ namespace serverSide.Controllers
             return IUser.showMyBooks(userId);
 
         }
-        // GET: api/<IUsersController>
+        
         [HttpGet("GetRequestsPerUser")]
         public List<dynamic> GetRequestsPerUser(int userId)
         {
             return IUser.getRequestsPerUser(userId);
+        }
+
+        [HttpGet("GetAllIusers")]
+        public List<dynamic> GetAllIusers()
+        {
+            return IUser.GetAllIusers();
         }
 
         // POST sign up new user
@@ -83,13 +89,8 @@ namespace serverSide.Controllers
 
             return Unauthorized("user session has ended");
         }
-        //// PUT sale and buy books
-        //[HttpPut("saleAndBuyBook")]
-        //public bool Put(int buyerId, int sellerId, int bookId)
-        //{
-        //    return IUser.saleAndBuyBook(buyerId, sellerId, bookId);
-        //}
-        // DELETE api/<IUsersController>/5
+        
+     
 
         // POST insert new request
         [HttpPost("insertNewRequest")]
@@ -97,7 +98,7 @@ namespace serverSide.Controllers
         {
             return IUser.insertNewRequest(sellerId, buyerId, bookId);
         }
-
+        // DELETE api/<IUsersController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
 

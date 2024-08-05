@@ -30,6 +30,7 @@
                 <nav>
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
+                        <li class="nav-item adminPage"><a class="nav-link text-white " href="adminPage.html">Admin Page</a></li>
                         <li class="nav-item myBooks"><a class="nav-link text-white " href="myBooks.html">My Books</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="author.html">Authors</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
@@ -430,6 +431,7 @@
                 showConfirmButton: false,
                 timer: 1500
             });
+            showRequests();
 
         }
         function errorToSendRequest() {
@@ -452,6 +454,13 @@
                 $('.userName').text(loginUser.userName);
                 $('.myBooks').show();
                 $('.requestBox').show();
+                $('.adminPage').hide(); 
+                //check if the login user is admin and open the access to admin page
+                if (loginUser.userName == "admin") {
+                    $('.adminPage').show();
+                    $('.userNameBox').hide();
+                }
+                
             }
             else {
                 $('.userNameBox').hide();
@@ -460,6 +469,7 @@
                 $('.userName').text("");
                 $('.myBooks').hide();
                 $('.requestBox').hide();
+                $('.adminPage').hide();
             }
         }
 

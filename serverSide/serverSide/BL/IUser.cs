@@ -120,6 +120,12 @@ namespace serverSide.BL
             DBservicesUsers dBservicesUsers = new DBservicesUsers();
 
             return dBservicesUsers.getRequestsPerUser(userId);
+        } 
+        public static List<dynamic> GetAllIusers()
+        {
+            DBservicesUsers dBservicesUsers = new DBservicesUsers();
+
+            return dBservicesUsers.GetAllIusers();
         }
 
     }
