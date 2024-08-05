@@ -515,87 +515,6 @@ public class DBservicesUsers
         return cmd;
     }
 
-
-    //--------------------------------------------------------------------------------------------------
-    // This method sale And Buy Book
-    //--------------------------------------------------------------------------------------------------
-
-    //public int saleAndBuyBook(int buyerId, int sellerId, int bookID)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-    //    SqlParameter returnValue = new SqlParameter();
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithStoredProceduresaleAndBuyBook("saleAndBuyBook", con, buyerId, sellerId, bookID);             // create the command
-
-    //    returnValue.ParameterName = "@RETURN_VALUE";
-    //    returnValue.Direction = ParameterDirection.ReturnValue;
-    //    cmd.Parameters.Add(returnValue);
-
-    //    try
-    //    {
-    //        cmd.ExecuteNonQuery(); // execute the command
-
-    //        int numEffected = (int)cmd.Parameters["@RETURN_VALUE"].Value;
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure to sale and buy book
-    ////---------------------------------------------------------------------------------
-
-    //private SqlCommand CreateCommandWithStoredProceduresaleAndBuyBook(String spName, SqlConnection con, int buyerId, int sellerId, int bookID)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be text
-
-    //    cmd.Parameters.AddWithValue("@buyyerId", buyerId);
-
-    //    cmd.Parameters.AddWithValue("@sellerId", sellerId);
-
-    //    cmd.Parameters.AddWithValue("@bookID", bookID);
-
-
-    //    return cmd;
-    //}
-
-
     //--------------------------------------------------------------------------------------------------
     // This method Insert new Request
     //--------------------------------------------------------------------------------------------------
@@ -764,7 +683,7 @@ public class DBservicesUsers
     public List<dynamic> getRequestsPerUser(int userId)
     {
         SqlConnection con = null;
-        SqlCommand cmd = null;
+        SqlCommand cmd;
         List<dynamic> userRequests = new List<dynamic>();
 
         try
@@ -845,9 +764,6 @@ public class DBservicesUsers
         return cmd;
     }
 
-<<<<<<< Updated upstream
-
-
     //--------------------------------------------------------------------------------------------------
     // This method Get all users
     //--------------------------------------------------------------------------------------------------
@@ -926,6 +842,4 @@ public class DBservicesUsers
         return cmd;
     }
 
-=======
->>>>>>> Stashed changes
 }

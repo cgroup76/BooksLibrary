@@ -19,6 +19,10 @@
     <!-- sweet aleret -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!--signal-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+
 </head>
 <body>
     <header class="bg-dark text-white py-3">
@@ -148,6 +152,44 @@
             $('.requestBox').click(showRequests);
 
         })
+
+        // signal massages
+
+        const connection = new signalR.HubConnectionBuilder()
+
+        const user = localStorage.getItem("loginUserDetails");
+
+        if (user != null) { user = user.userName; }
+
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl(`/messageHub?user=${user}`)
+            .build();
+
+        connection.on("ReceiveMessage", (user, message) => {
+            const msgDiv = document.getElementById("messages");
+            const newMsg = document.createElement("div");
+            newMsg.innerHTML = `<strong>${user}:</strong> ${message}`;
+            msgDiv.appendChild(newMsg);
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+        
+
+        //-------------------------------------
+
+        function sendMessage() {
+            const user = "";
+            const message = document.getElementById("message").value;
+
+            ajaxCall('POST', '/api/messages', JSON.stringify({ user: user, message: message }),
+                function (response) {
+                    console.log("Message sent successfully");
+                },
+                function (err) {
+                    console.error("Error sending message", err);
+                }
+            );
+        }
 
         // login or signup form
 
