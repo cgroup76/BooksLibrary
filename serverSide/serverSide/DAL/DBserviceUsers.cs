@@ -845,6 +845,7 @@ public class DBservicesUsers
         return cmd;
     }
 
+<<<<<<< Updated upstream
 
 
     //--------------------------------------------------------------------------------------------------
@@ -925,4 +926,6 @@ public class DBservicesUsers
         return cmd;
     }
 
+=======
+>>>>>>> Stashed changes
 }
